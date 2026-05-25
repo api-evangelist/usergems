@@ -1,0 +1,85 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
+provider: UserGems
+providerId: usergems
+created: '2026-05-25'
+modified: '2026-05-25'
+reconciled: false
+tags:
+  - FinOps
+  - Sales Intelligence
+  - ABM
+  - SaaS
+description: |
+  FOCUS-aligned FinOps definition for UserGems. UserGems is a sales-led SaaS
+  with annual subscriptions and no public per-call usage pricing. The primary
+  cost dimensions exposed to the buyer are platform seats, signal coverage
+  scope, and downstream CRM API consumption (Salesforce) which the buyer pays
+  for separately to their CRM vendor. The public ROI guarantee provides a
+  pipeline-tied credit/refund mechanism that maps to FOCUS Credit and
+  Adjustment charge categories.
+sources:
+  - https://www.usergems.com/pricing
+  - https://www.usergems.com/product/api
+  - https://help.usergems.com/article/how-many-salesforce-api-calls-does-usergems-use
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+publisherName: UserGems
+serviceCategory: Sales Intelligence and ABM
+billingModel:
+  pricingCategory: Subscription
+  billingFrequency: Annual
+  billingCurrency: USD
+  chargeCategories:
+    - Usage
+    - Purchase
+    - Credit
+    - Adjustment
+  primaryUnit: seat
+  secondaryUnits:
+    - signal_coverage
+    - integration
+focusColumns:
+  ServiceName: UserGems Platform
+  ServiceCategory: Sales Intelligence and ABM
+  ProviderName: UserGems
+  PublisherName: UserGems
+  InvoiceIssuerName: UserGems
+  PricingCategory: Subscription
+  PricingUnit: seat
+  BillingCurrency: USD
+meters:
+  - name: seats
+    unit: seat
+    aggregation: max
+    dimensions:
+      - role
+      - workspace
+  - name: signals_consumed
+    unit: signal
+    aggregation: sum
+    dimensions:
+      - signal_type
+      - workflow
+  - name: salesforce_api_calls
+    unit: call
+    aggregation: sum
+    dimensions:
+      - salesforce_instance
+      - product
+      - day
+    note: |
+      This meter is paid to Salesforce, not UserGems; included for FOCUS
+      cross-attribution of total cost-to-serve outbound workflows.
+guarantees:
+  - id: roi-money-back
+    name: $100K Pipeline ROI Guarantee
+    chargeCategory: Credit
+    description: |
+      If $100K spend does not generate $100K in pipeline, UserGems refunds
+      the difference. Maps to FOCUS Credit / Adjustment.

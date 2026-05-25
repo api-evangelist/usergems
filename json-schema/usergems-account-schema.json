@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api-evangelist.com/schemas/usergems/usergems-account-schema.json",
+  "title": "UserGems Account",
+  "description": "Schema for the UserGems Account object submitted via POST /v1/account. Identifies a target company UserGems should source prospects against.",
+  "type": "object",
+  "required": ["name", "domain"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Account name (display name of the target company)."
+    },
+    "domain": {
+      "type": "string",
+      "description": "Primary domain for the target company (e.g. example.com)."
+    },
+    "reportName": {
+      "type": "string",
+      "description": "Report or workflow grouping the account belongs to."
+    },
+    "signal": {
+      "type": "string",
+      "description": "Signal label associated with prospects routed for this account."
+    },
+    "salesforceId": {
+      "type": "string",
+      "description": "Salesforce Account ID for cross-reference."
+    },
+    "customId": {
+      "type": "string",
+      "description": "Customer-supplied identifier for cross-reference."
+    },
+    "custom": {
+      "type": "string",
+      "description": "Free-form custom metadata to round-trip with downstream events."
+    }
+  },
+  "additionalProperties": false
+}

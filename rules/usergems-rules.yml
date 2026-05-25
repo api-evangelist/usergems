@@ -1,0 +1,56 @@
+extends:
+  - [spectral:oas, recommended]
+  - [spectral:asyncapi, recommended]
+documentationUrl: https://github.com/api-evangelist/usergems
+rules:
+  usergems-info-contact-required:
+    description: UserGems specs must include info.contact with name, url, and email.
+    given: $.info
+    severity: error
+    then:
+      - field: contact
+        function: truthy
+      - field: contact.email
+        function: truthy
+  usergems-server-must-be-production:
+    description: UserGems specs must declare api.usergems.com/v1 as a server.
+    given: $.servers[*].url
+    severity: error
+    then:
+      function: pattern
+      functionOptions:
+        match: "^https://api\\.usergems\\.com/v1$"
+  usergems-security-must-be-apikey:
+    description: All UserGems operations must use the X-Api-Key header API key scheme.
+    given: $.components.securitySchemes
+    severity: error
+    then:
+      field: ApiKeyAuth
+      function: truthy
+  usergems-operation-summary-title-case:
+    description: Operation summaries must be Title Case (e.g. "Add Contact", not "add contact").
+    given: $.paths[*][get,post,put,delete,patch].summary
+    severity: warn
+    then:
+      function: pattern
+      functionOptions:
+        match: "^[A-Z][A-Za-z0-9]+( [A-Z][A-Za-z0-9]+)*$"
+  usergems-tags-required:
+    description: Every operation must be tagged with Contacts, Accounts, or Privacy.
+    given: $.paths[*][get,post,put,delete,patch].tags
+    severity: error
+    then:
+      function: schema
+      functionOptions:
+        schema:
+          type: array
+          minItems: 1
+          items:
+            type: string
+            enum: [Contacts, Accounts, Privacy]
+  usergems-success-response-object:
+    description: Successful responses must return a QueueAck-shaped object with a message field.
+    given: $.paths[*][post,delete].responses["200"].content["application/json"].schema
+    severity: warn
+    then:
+      function: truthy

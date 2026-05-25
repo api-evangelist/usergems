@@ -1,0 +1,59 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: UserGems
+providerId: usergems
+created: '2026-05-25'
+modified: '2026-05-25'
+reconciled: false
+tags:
+  - Rate Limiting
+  - Quotas
+  - Salesforce
+description: |
+  UserGems does not publish explicit request-rate limits on its outbound REST
+  API. The platform does, however, enforce a downstream Salesforce-side quota
+  of 20,000 API calls per Salesforce instance per 24-hour rolling window
+  across all UserGems products, with sync continuation the following day if
+  reached. Custom caps above or below 20K are negotiable through a Customer
+  Success Manager. Maximum platform throughput is approximately 1,000 job
+  changes per day per customer. The /v1 API surfaces a 429 status code per
+  the published error catalog (along with 400, 401, 403, 404, 405, 406, 410,
+  500, 503).
+sources:
+  - https://help.usergems.com/article/how-many-salesforce-api-calls-does-usergems-use
+  - https://app.usergems.com/api/documentation
+responseCodes:
+  throttled: 429
+  quotaExceeded: 429
+algorithm: rolling-window
+limits:
+  - scope: salesforce-instance
+    window: 24h
+    requests: 20000
+    description: |
+      Default Salesforce API call cap across all UserGems products per
+      Salesforce instance per 24-hour rolling window.
+  - scope: contact-tracking
+    metric: salesforce-api-calls-per-job-change
+    requests: 10
+    range: '10-15'
+    description: |
+      Job-change batch consumption: typically 10-15 Salesforce API calls per
+      individual job change delivered.
+  - scope: account-tracking
+    metric: salesforce-api-calls-per-contact
+    requests: 1
+    description: |
+      Key Missing Contacts (account tracking): approximately 1 Salesforce API
+      call per lead or contact delivered.
+  - scope: throughput
+    metric: job-changes-per-day
+    requests: 1000
+    description: Approximate maximum throughput of job changes per customer per day.
+customCaps:
+  available: true
+  channel: Customer Success Manager
+  notes: |
+    Customers can request bespoke caps above or below the 20K default by
+    contacting their CSM.

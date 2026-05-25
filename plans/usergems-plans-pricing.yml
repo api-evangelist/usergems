@@ -1,0 +1,67 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: UserGems
+providerId: usergems
+created: '2026-05-25'
+modified: '2026-05-25'
+reconciled: false
+tags:
+  - Sales
+  - Outbound
+  - ABM
+  - Champion Tracking
+  - Job Changes
+description: |
+  UserGems does not publish a self-service price list. Pricing is sales-led and
+  scoped to platform tier (signal coverage, seat count, CRM and engagement
+  integrations included). The company publicly advertises a money-back
+  guarantee: if a customer spends $100K and does not generate at least $100K
+  in pipeline, UserGems refunds the difference. This file captures the known
+  commercial surface; per-tier pricing must be obtained from UserGems sales.
+sources:
+  - https://www.usergems.com/product/api
+  - https://www.usergems.com/pricing
+  - https://help.usergems.com
+plans:
+  - id: usergems-platform
+    name: UserGems Platform
+    type: subscription
+    description: |
+      Annual subscription to the UserGems AI Command Center. Includes signals
+      (job changes, intent, M&A, hiring, contact-level web visits), Gem-E AI
+      agents for prospect list building and email personalization, custom AI
+      scoring, intelligent workflows across ads/outreach/CRM, and Chrome
+      extension. CRM, sales engagement, marketing automation, and ad platform
+      integrations included.
+    entries:
+      - label: Contact us
+        name: contact-sales
+        type: contact
+        metric: seat
+        limit: -1
+        timeFrame: year
+        geo: global
+        unit: 1
+        price: Call
+        userMultiplied: false
+    elements:
+      - name: Gem-E AI Agents (prospect lists, email personalization)
+      - name: 30+ native signals including job changes, intent, hiring, M&A
+      - name: Custom AI scoring with 600+ closed-won training signals
+      - name: Intelligent workflows across ads, outreach, and CRM updates
+      - name: Contact-level intent (specific buyers, not just companies)
+      - name: Chrome extension for in-workflow access
+      - name: CRM integrations (Salesforce, HubSpot, Microsoft Dynamics)
+      - name: Sales engagement integrations (Outreach, Salesloft, Gong Engage)
+      - name: Marketing automation integrations (HubSpot, Marketo)
+      - name: Ad platform integrations (LinkedIn Ads, Meta Ads, Google Ads)
+      - name: Outbound REST API for contact and account submission
+guarantees:
+  - id: usergems-roi-guarantee
+    name: ROI money-back guarantee
+    description: |
+      UserGems publicly advertises that if a customer spends $100K and does
+      not generate at least $100K in pipeline, they refund the difference.
+    threshold: '$100,000'
+    metric: pipeline-generated

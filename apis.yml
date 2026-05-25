@@ -1,0 +1,182 @@
+aid: usergems
+url: https://raw.githubusercontent.com/api-evangelist/usergems/refs/heads/main/apis.yml
+name: UserGems
+description: >-
+  UserGems is a San Francisco-based sales intelligence platform that tracks
+  champion job changes and surfaces buying signals so sales and marketing
+  teams can prioritize outbound and ABM motions. The platform packages 30+
+  native signals (job changes, contact-level intent, M&A, hiring, web visits),
+  Gem-E AI agents for prospect list building and email personalization, and
+  custom AI scoring trained on 600+ closed-won patterns. UserGems exposes a
+  public REST API at api.usergems.com/v1 that lets customers programmatically
+  add and remove contacts to track for job changes, add and remove target
+  accounts, and honor data-subject deletion requests. The API uses an X-Api-Key
+  header for authentication and processes submissions asynchronously. Native
+  integrations include Salesforce, HubSpot, Microsoft Dynamics, Outreach,
+  Salesloft, Gong Engage, Marketo, LinkedIn Ads, Meta Ads, and Google Ads.
+tags:
+  - Sales Intelligence
+  - Outbound
+  - ABM
+  - Champion Tracking
+  - Job Changes
+  - Buying Signals
+  - AI Scoring
+  - Sales Engagement
+  - CRM
+  - Revenue Operations
+  - GTM
+kind: contract
+image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+access: 3rd-Party
+position: Consuming
+created: '2026-05-25'
+modified: '2026-05-25'
+specificationVersion: '0.16'
+apis:
+  - aid: usergems:usergems-api
+    name: UserGems API
+    humanURL: https://app.usergems.com/api/documentation
+    tags:
+      - Sales Intelligence
+      - Contacts
+      - Accounts
+      - Privacy
+    description: >-
+      The UserGems outbound REST API lets customers programmatically add and
+      remove contacts UserGems should track for job changes, add and remove
+      target accounts to source prospects against, and submit data-subject
+      deletion requests. API key auth via X-Api-Key header; base URL
+      https://api.usergems.com/v1. Five operations across three business
+      surfaces.
+    properties:
+      - type: Documentation
+        url: https://app.usergems.com/api/documentation
+      - type: Documentation
+        url: https://www.usergems.com/product/api
+      - type: OpenAPI
+        url: openapi/usergems-api-openapi.yml
+      - type: JSONSchema
+        url: json-schema/usergems-contact-schema.json
+      - type: JSONSchema
+        url: json-schema/usergems-account-schema.json
+      - type: JSONLD
+        url: json-ld/usergems-context.jsonld
+      - type: NaftikoCapability
+        url: capabilities/contacts-contacts.yaml
+      - type: NaftikoCapability
+        url: capabilities/accounts-accounts.yaml
+      - type: NaftikoCapability
+        url: capabilities/privacy-privacy.yaml
+      - type: Example
+        url: examples/usergems-add-contact-example.json
+      - type: Example
+        url: examples/usergems-add-account-example.json
+      - type: Example
+        url: examples/usergems-privacy-delete-example.json
+      - type: SpectralRules
+        url: rules/usergems-rules.yml
+common:
+  - type: Website
+    url: https://www.usergems.com
+  - type: Portal
+    url: https://www.usergems.com/product
+  - type: Documentation
+    url: https://app.usergems.com/api/documentation
+  - type: Documentation
+    url: https://help.usergems.com
+  - type: Documentation
+    url: https://help.usergems.com/article/usergems-implementation-guide-salesforce-crm
+  - type: Documentation
+    url: https://help.usergems.com/article/usergems-implementation-guide-hubspot-crm
+  - type: Documentation
+    url: https://help.usergems.com/article/how-many-salesforce-api-calls-does-usergems-use
+  - type: Documentation
+    url: https://help.usergems.com/article/usergems-outreach-configuration
+  - type: Product
+    url: https://www.usergems.com/product/api
+  - type: SignUp
+    url: https://www.usergems.com/demo
+  - type: Pricing
+    url: https://www.usergems.com/pricing
+  - type: Blog
+    url: https://www.usergems.com/blog
+  - type: Customers
+    url: https://www.usergems.com/customers
+  - type: Careers
+    url: https://www.usergems.com/careers
+  - type: Contact
+    url: https://www.usergems.com/contact
+  - type: Support
+    url: mailto:support@usergems.com
+  - type: PrivacyPolicy
+    url: https://www.usergems.com/legal/privacy
+  - type: TermsOfService
+    url: https://www.usergems.com/legal/terms
+  - type: TrustCenter
+    url: https://www.usergems.com/security
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/usergems
+  - type: Twitter
+    url: https://twitter.com/usergems
+  - type: GitHubOrganization
+    url: https://github.com/usergems
+  - type: Plans
+    url: plans/usergems-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/usergems-rate-limits.yml
+  - type: FinOps
+    url: finops/usergems-finops.yml
+  - type: Integrations
+    data:
+      - name: Salesforce
+        category: CRM
+      - name: HubSpot
+        category: CRM
+      - name: Microsoft Dynamics
+        category: CRM
+      - name: Outreach
+        category: Sales Engagement
+      - name: Salesloft
+        category: Sales Engagement
+      - name: Gong Engage
+        category: Sales Engagement
+      - name: HubSpot Marketing
+        category: Marketing Automation
+      - name: Marketo
+        category: Marketing Automation
+      - name: LinkedIn Ads
+        category: Advertising
+      - name: Meta Ads
+        category: Advertising
+      - name: Google Ads
+        category: Advertising
+      - name: Chrome Extension
+        category: Productivity
+  - type: Features
+    data:
+      - Gem-E AI agents for prospect list building and email personalization
+      - 30+ native signals (job changes, contact-level intent, hiring, M&A, web visits)
+      - Custom AI scoring trained on 600+ closed-won patterns
+      - Intelligent workflows orchestrating ads, outreach, and CRM updates
+      - Contact-level intent (specific buyers, not just account-level)
+      - Outbound REST API for contact and account submission with up to 100 custom signal fields per contact
+      - Privacy delete endpoint for GDPR/CCPA right-to-erasure
+      - X-Api-Key header authentication
+      - Asynchronous queue-based processing
+      - Customer-configurable Salesforce API cap (default 20K calls per 24h per instance)
+      - Native integrations with Salesforce, HubSpot, Dynamics, Outreach, Salesloft, Gong, Marketo, LinkedIn/Meta/Google Ads
+      - Chrome extension for in-workflow access
+      - SOC 2 Type 2, GDPR, and CCPA compliance posture
+      - Money-back ROI guarantee — $100K spend tied to $100K pipeline
+    sources:
+      - https://www.usergems.com
+      - https://www.usergems.com/product/api
+      - https://app.usergems.com/api/documentation
+      - https://help.usergems.com/article/how-many-salesforce-api-calls-does-usergems-use
+    updated: '2026-05-25'
+maintainers:
+  - FN: Kin Lane
+    email: info@apievangelist.com
+    X: apievangelist
+    url: https://apievangelist.com

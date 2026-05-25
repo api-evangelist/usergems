@@ -1,0 +1,10 @@
+{
+  "email": "jane.doe@example.com",
+  "firstName": "Jane",
+  "lastName": "Doe",
+  "company": "Acme Inc",
+  "relationshipType": "Champion",
+  "linkedinUrl": "https://www.linkedin.com/in/janedoe",
+  "signal": "q2-champions",
+  "custom": "campaign:spring-2026"
+}

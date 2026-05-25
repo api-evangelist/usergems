@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api-evangelist.com/schemas/usergems/usergems-contact-schema.json",
+  "title": "UserGems Contact",
+  "description": "Schema for the UserGems Contact object submitted via POST /v1/contact. Identifies a person UserGems should track for job changes.",
+  "type": "object",
+  "required": ["email"],
+  "properties": {
+    "email": {
+      "type": "string",
+      "format": "email",
+      "description": "Email address of the person UserGems should track."
+    },
+    "firstName": {
+      "type": "string",
+      "description": "Given name of the contact."
+    },
+    "lastName": {
+      "type": "string",
+      "description": "Family name of the contact."
+    },
+    "fullName": {
+      "type": "string",
+      "description": "Full display name; an alternative to firstName + lastName."
+    },
+    "company": {
+      "type": "string",
+      "description": "Current employer at time of submission."
+    },
+    "relationshipType": {
+      "type": "string",
+      "description": "Relationship bucket. Common values: Champion, User, Prospect, Other. Custom values allowed.",
+      "examples": ["Champion", "User", "Prospect", "Other"]
+    },
+    "linkedinUrl": {
+      "type": "string",
+      "format": "uri",
+      "description": "Public LinkedIn profile URL."
+    },
+    "signal": {
+      "type": "string",
+      "description": "Signal label associating the contact with a workflow."
+    },
+    "custom": {
+      "type": "string",
+      "description": "Free-form custom metadata to round-trip with downstream events."
+    }
+  },
+  "additionalProperties": {
+    "type": "string",
+    "description": "Customers may attach up to 100 custom signal fields as additional top-level string properties."
+  }
+}
