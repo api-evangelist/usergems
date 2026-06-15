@@ -1,0 +1,167 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "UserGems API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-Api-Key",
+      "value": "{{X-Api-Key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Contacts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Add Contact",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.usergems.com/v1/contact",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Enqueue a contact for UserGems to track for job changes. The contact is\nidentified by email; optional fields enrich the tracked record with name,\ncompany, LinkedIn URL, relationship type, signal label, and up to 100\ncustom signal fields. The API returns immediately once the contact is\naccepted into the processing queue.\n"
+        },
+        {
+          "info": {
+            "name": "Delete Contact",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.usergems.com/v1/contact",
+            "params": [
+              {
+                "name": "email",
+                "value": "",
+                "type": "query",
+                "description": "Email address of the contact to remove."
+              },
+              {
+                "name": "relationshipType",
+                "value": "",
+                "type": "query",
+                "description": "Restrict deletion to a single relationship type bucket."
+              },
+              {
+                "name": "signal",
+                "value": "",
+                "type": "query",
+                "description": "Restrict deletion to a single signal label."
+              }
+            ]
+          },
+          "docs": "Remove a contact from UserGems' tracked list. The contact is identified\nby email; relationshipType and signal narrow the deletion to a specific\nscope so the same email can remain tracked under other relationship or\nsignal combinations.\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Accounts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Add Account",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.usergems.com/v1/account",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Enqueue an account so UserGems sources prospects against it. Accounts are\nidentified by the (name, domain) pair; optional fields associate the\naccount with a Salesforce ID, a custom ID, a report name, and a signal\nlabel so prospects can be routed back to the right workflow.\n"
+        },
+        {
+          "info": {
+            "name": "Delete Account",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.usergems.com/v1/account",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Account name as previously submitted."
+              },
+              {
+                "name": "domain",
+                "value": "",
+                "type": "query",
+                "description": "Primary domain for the account."
+              },
+              {
+                "name": "reportName",
+                "value": "",
+                "type": "query",
+                "description": "Report or workflow grouping the account belongs to."
+              },
+              {
+                "name": "signal",
+                "value": "",
+                "type": "query",
+                "description": "Signal label originally attached to the account."
+              },
+              {
+                "name": "salesforceId",
+                "value": "",
+                "type": "query",
+                "description": "Salesforce Account ID for cross-reference."
+              },
+              {
+                "name": "customId",
+                "value": "",
+                "type": "query",
+                "description": "Customer-supplied identifier for cross-reference."
+              }
+            ]
+          },
+          "docs": "Remove a previously added account. Identified by (name, domain); the\noptional reportName, signal, salesforceId, and customId fields scope the\ndeletion to a specific routing context.\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Privacy",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Privacy Delete",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.usergems.com/v1/privacy/delete",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Honor a data-subject deletion request. Removes the contact identified by\nemail from all UserGems tracking surfaces. Designed to satisfy GDPR and\nCCPA right-to-erasure obligations.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
