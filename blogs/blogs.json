@@ -3,19 +3,12 @@
   "feeds": [
     {
       "source": "https://www.usergems.com/blog",
-      "feed_url": "https://www.usergems.com/blog",
-      "title": "",
+      "feed_url": "",
       "saved": 0,
-      "method": "none"
-    },
-    {
-      "source": "https://www.usergems.com/pricing",
-      "feed_url": "https://www.usergems.com/pricing",
-      "title": "",
-      "saved": 0,
-      "method": "none"
+      "method": "agent-scrape"
     }
   ],
   "post_count": 0,
-  "fetched": "2026-06-14T20:42:17Z"
+  "fetched": "2026-06-27T13:18:42Z",
+  "agent_pulled": "2026-06-27"
 }

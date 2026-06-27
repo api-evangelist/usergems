@@ -56,11 +56,11 @@ apis:
         url: json-schema/usergems-account-schema.json
       - type: JSONLD
         url: json-ld/usergems-context.jsonld
-      - type: Example
+      - type: Examples
         url: examples/usergems-add-contact-example.json
-      - type: Example
+      - type: Examples
         url: examples/usergems-add-account-example.json
-      - type: Example
+      - type: Examples
         url: examples/usergems-privacy-delete-example.json
       - type: SpectralRules
         url: rules/usergems-rules.yml
@@ -83,7 +83,7 @@ common:
     url: https://help.usergems.com/article/usergems-outreach-configuration
   - type: Product
     url: https://www.usergems.com/product/api
-  - type: SignUp
+  - type: Signup
     url: https://www.usergems.com/demo
   - type: Pricing
     url: https://www.usergems.com/pricing
