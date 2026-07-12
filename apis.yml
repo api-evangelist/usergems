@@ -65,6 +65,14 @@ apis:
       - type: SpectralRules
         url: rules/usergems-rules.yml
 common:
+  - type: TrustCenter
+    url: security/usergems-trust-center.yml
+  - type: VulnerabilityDisclosure
+    url: security/usergems-vulnerability-disclosure.yml
+  - type: DomainSecurity
+    url: security/usergems-domain-security.yml
+  - type: Authentication
+    url: authentication/usergems-authentication.yml
   - type: Website
     url: https://www.usergems.com
   - type: Portal
