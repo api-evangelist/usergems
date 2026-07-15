@@ -65,6 +65,8 @@ apis:
       - type: SpectralRules
         url: rules/usergems-rules.yml
 common:
+  - type: AgenticAccess
+    url: agentic-access/usergems-agentic-access.yml
   - type: TrustCenter
     url: security/usergems-trust-center.yml
   - type: VulnerabilityDisclosure
