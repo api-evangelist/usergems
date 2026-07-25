@@ -1,0 +1,226 @@
+openapi: 3.1.0
+info:
+  title: UserGems Accounts Contacts API
+  description: 'The UserGems API lets customers programmatically add contacts to track for job
+
+    changes and add accounts to receive prospects for. It also exposes a privacy
+
+    delete endpoint used to honor data-subject removal requests. Requests are
+
+    authenticated with a customer-issued API key sent in the X-Api-Key header and
+
+    are processed asynchronously — responses confirm enqueueing, not completion.
+
+    '
+  version: 1.0.0
+  contact:
+    name: UserGems
+    url: https://www.usergems.com
+    email: support@usergems.com
+  license:
+    name: UserGems Terms of Service
+    url: https://www.usergems.com/legal/terms
+servers:
+- url: https://api.usergems.com/v1
+  description: Production
+security:
+- ApiKeyAuth: []
+tags:
+- name: Contacts
+  description: Add and remove contacts UserGems should track for job changes.
+paths:
+  /contact:
+    post:
+      summary: Add Contact
+      description: 'Enqueue a contact for UserGems to track for job changes. The contact is
+
+        identified by email; optional fields enrich the tracked record with name,
+
+        company, LinkedIn URL, relationship type, signal label, and up to 100
+
+        custom signal fields. The API returns immediately once the contact is
+
+        accepted into the processing queue.
+
+        '
+      operationId: addContact
+      tags:
+      - Contacts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddContactRequest'
+            examples:
+              AddContactExample:
+                $ref: '#/components/examples/AddContactExample'
+      responses:
+        '200':
+          description: Contact added to the processing queue.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueueAck'
+              examples:
+                AddContactAck:
+                  $ref: '#/components/examples/AddContactAck'
+        4XX:
+          $ref: '#/components/responses/ErrorResponse'
+        5XX:
+          $ref: '#/components/responses/ErrorResponse'
+    delete:
+      summary: Delete Contact
+      description: 'Remove a contact from UserGems'' tracked list. The contact is identified
+
+        by email; relationshipType and signal narrow the deletion to a specific
+
+        scope so the same email can remain tracked under other relationship or
+
+        signal combinations.
+
+        '
+      operationId: deleteContact
+      tags:
+      - Contacts
+      parameters:
+      - name: email
+        in: query
+        required: true
+        description: Email address of the contact to remove.
+        schema:
+          type: string
+          format: email
+      - name: relationshipType
+        in: query
+        required: false
+        description: Restrict deletion to a single relationship type bucket.
+        schema:
+          type: string
+      - name: signal
+        in: query
+        required: false
+        description: Restrict deletion to a single signal label.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Contact deleted from the tracked list.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueueAck'
+              examples:
+                DeleteContactAck:
+                  $ref: '#/components/examples/DeleteContactAck'
+        4XX:
+          $ref: '#/components/responses/ErrorResponse'
+        5XX:
+          $ref: '#/components/responses/ErrorResponse'
+components:
+  examples:
+    DeleteContactAck:
+      summary: Contact removed
+      value:
+        message: Contact deleted
+    AddContactExample:
+      summary: Add a Champion contact
+      value:
+        email: jane.doe@example.com
+        firstName: Jane
+        lastName: Doe
+        company: Acme Inc
+        relationshipType: Champion
+        linkedinUrl: https://www.linkedin.com/in/janedoe
+        signal: q2-champions
+    AddContactAck:
+      summary: Contact accepted
+      value:
+        message: Contact added to queue
+  responses:
+    ErrorResponse:
+      description: Error response. UserGems returns standard HTTP status codes (400, 401, 403, 404, 405, 406, 410, 429, 500, 503).
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    QueueAck:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Human-readable confirmation message.
+    AddContactRequest:
+      type: object
+      required:
+      - email
+      properties:
+        email:
+          type: string
+          format: email
+          description: Email address of the person UserGems should track.
+        firstName:
+          type: string
+          description: Given name of the contact.
+        lastName:
+          type: string
+          description: Family name of the contact.
+        fullName:
+          type: string
+          description: Full display name; an alternative to firstName + lastName.
+        company:
+          type: string
+          description: Current employer at time of submission.
+        relationshipType:
+          type: string
+          description: 'Bucket the contact belongs to. Common values include Champion, User,
+
+            Prospect, and Other. Customers can define additional custom values.
+
+            '
+          examples:
+          - Champion
+          - User
+          - Prospect
+          - Other
+        linkedinUrl:
+          type: string
+          format: uri
+          description: Public LinkedIn profile URL for the contact.
+        signal:
+          type: string
+          description: Signal label associating the contact with a workflow.
+        custom:
+          type: string
+          description: Free-form custom metadata to round-trip with downstream events.
+      additionalProperties:
+        type: string
+        description: 'Customers can attach up to 100 custom signal fields as additional
+
+          top-level string properties.
+
+          '
+    Error:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Human-readable error message.
+        code:
+          type: string
+          description: Optional machine-readable error code.
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-Api-Key
+      description: 'Customer-issued API key. Request a key from support@usergems.com. The
+
+        key must be included on every request in the X-Api-Key header.
+
+        '
