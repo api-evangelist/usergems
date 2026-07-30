@@ -23,48 +23,110 @@ tags:
   - Revenue Operations
   - GTM
 kind: contract
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/usergems.png
 access: 3rd-Party
 position: Consuming
 created: '2026-05-25'
 modified: '2026-05-25'
 specificationVersion: '0.16'
 apis:
-  - aid: usergems:usergems-api
-    name: UserGems API
-    humanURL: https://app.usergems.com/api/documentation
-    tags:
-      - Sales Intelligence
-      - Contacts
-      - Accounts
-      - Privacy
-    description: >-
-      The UserGems outbound REST API lets customers programmatically add and remove contacts UserGems should track for
-      job changes, add and remove target accounts to source prospects against, and submit data-subject deletion
-      requests. API key auth via X-Api-Key header; base URL https://api.usergems.com/v1. Five operations across three
-      business surfaces.
-    properties:
-      - type: Documentation
-        url: https://app.usergems.com/api/documentation
-      - type: Documentation
-        url: https://www.usergems.com/product/api
-      - type: OpenAPI
-        url: openapi/usergems-api-openapi.yml
-      - type: JSONSchema
-        url: json-schema/usergems-contact-schema.json
-      - type: JSONSchema
-        url: json-schema/usergems-account-schema.json
-      - type: JSONLD
-        url: json-ld/usergems-context.jsonld
-      - type: Examples
-        url: examples/usergems-add-contact-example.json
-      - type: Examples
-        url: examples/usergems-add-account-example.json
-      - type: Examples
-        url: examples/usergems-privacy-delete-example.json
-      - type: SpectralRules
-        url: rules/usergems-rules.yml
+- aid: usergems:usergems-accounts-api
+  name: UserGems Accounts API
+  description: Add and remove accounts UserGems should source prospects against.
+  humanURL: https://app.usergems.com/api/documentation
+  tags:
+  - Accounts
+  properties:
+  - type: OpenAPI
+    url: openapi/usergems-accounts-api-openapi.yml
+  - type: Documentation
+    url: https://app.usergems.com/api/documentation
+  - type: Documentation
+    url: https://www.usergems.com/product/api
+  - type: JSONSchema
+    url: json-schema/usergems-contact-schema.json
+  - type: JSONSchema
+    url: json-schema/usergems-account-schema.json
+  - type: JSONLD
+    url: json-ld/usergems-context.jsonld
+  - type: Examples
+    url: examples/usergems-add-contact-example.json
+  - type: Examples
+    url: examples/usergems-add-account-example.json
+  - type: Examples
+    url: examples/usergems-privacy-delete-example.json
+  - type: SpectralRules
+    url: rules/usergems-rules.yml
+- aid: usergems:usergems-contacts-api
+  name: UserGems Contacts API
+  description: Add and remove contacts UserGems should track for job changes.
+  humanURL: https://app.usergems.com/api/documentation
+  tags:
+  - Contacts
+  properties:
+  - type: OpenAPI
+    url: openapi/usergems-contacts-api-openapi.yml
+  - type: Documentation
+    url: https://app.usergems.com/api/documentation
+  - type: Documentation
+    url: https://www.usergems.com/product/api
+  - type: JSONSchema
+    url: json-schema/usergems-contact-schema.json
+  - type: JSONSchema
+    url: json-schema/usergems-account-schema.json
+  - type: JSONLD
+    url: json-ld/usergems-context.jsonld
+  - type: Examples
+    url: examples/usergems-add-contact-example.json
+  - type: Examples
+    url: examples/usergems-add-account-example.json
+  - type: Examples
+    url: examples/usergems-privacy-delete-example.json
+  - type: SpectralRules
+    url: rules/usergems-rules.yml
+- aid: usergems:usergems-privacy-api
+  name: UserGems Privacy API
+  description: Honor data-subject deletion requests for tracked contacts.
+  humanURL: https://app.usergems.com/api/documentation
+  tags:
+  - Privacy
+  properties:
+  - type: OpenAPI
+    url: openapi/usergems-privacy-api-openapi.yml
+  - type: Documentation
+    url: https://app.usergems.com/api/documentation
+  - type: Documentation
+    url: https://www.usergems.com/product/api
+  - type: JSONSchema
+    url: json-schema/usergems-contact-schema.json
+  - type: JSONSchema
+    url: json-schema/usergems-account-schema.json
+  - type: JSONLD
+    url: json-ld/usergems-context.jsonld
+  - type: Examples
+    url: examples/usergems-add-contact-example.json
+  - type: Examples
+    url: examples/usergems-add-account-example.json
+  - type: Examples
+    url: examples/usergems-privacy-delete-example.json
+  - type: SpectralRules
+    url: rules/usergems-rules.yml
 common:
+  - type: PostmanWorkspace
+    url: https://www.postman.com/kinlaneapi/usergems/overview
   - type: AgenticAccess
     url: agentic-access/usergems-agentic-access.yml
   - type: TrustCenter
