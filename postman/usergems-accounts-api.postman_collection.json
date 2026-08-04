@@ -1,0 +1,547 @@
+{
+  "info": {
+    "_postman_id": "77259982-0a64-4918-9ca4-683e5a387253",
+    "name": "UserGems Accounts API",
+    "description": "The UserGems API lets customers programmatically add contacts to track for job\nchanges and add accounts to receive prospects for. It also exposes a privacy\ndelete endpoint used to honor data-subject removal requests. Requests are\nauthenticated with a customer-issued API key sent in the X-Api-Key header and\nare processed asynchronously \u2014 responses confirm enqueueing, not completion.\n\n\nContact Support:\n Name: UserGems\n Email: support@usergems.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T03:25:53.000Z",
+    "updatedAt": "2026-07-28T03:25:53.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-77259982-0a64-4918-9ca4-683e5a387253"
+  },
+  "item": [
+    {
+      "name": "account",
+      "item": [
+        {
+          "name": "Add Account",
+          "id": "f19a62f8-93ca-43c5-a0e2-97d7a3c341c6",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"domain\": \"<string>\",\n  \"reportName\": \"<string>\",\n  \"signal\": \"<string>\",\n  \"salesforceId\": \"<string>\",\n  \"customId\": \"<string>\",\n  \"custom\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/account",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "account"
+              ]
+            },
+            "description": "Enqueue an account so UserGems sources prospects against it. Accounts are\nidentified by the (name, domain) pair; optional fields associate the\naccount with a Salesforce ID, a custom ID, a report name, and a signal\nlabel so prospects can be routed back to the right workflow.\n"
+          },
+          "response": [
+            {
+              "id": "80549d53-5d78-4b9b-a72c-0458daf78275",
+              "name": "Account added.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "X-Api-Key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"domain\": \"<string>\",\n  \"reportName\": \"<string>\",\n  \"signal\": \"<string>\",\n  \"salesforceId\": \"<string>\",\n  \"customId\": \"<string>\",\n  \"custom\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/account",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "account"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T03:25:54.000Z",
+              "updatedAt": "2026-07-28T03:25:54.000Z",
+              "uid": "35240-80549d53-5d78-4b9b-a72c-0458daf78275"
+            },
+            {
+              "id": "0a68f887-cc8e-464e-8408-d3424b8ba019",
+              "name": "Error response. UserGems returns standard HTTP status codes (400, 401, 403, 404, 405, 406, 410, 429, 500, 503).",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "X-Api-Key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"domain\": \"<string>\",\n  \"reportName\": \"<string>\",\n  \"signal\": \"<string>\",\n  \"salesforceId\": \"<string>\",\n  \"customId\": \"<string>\",\n  \"custom\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/account",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "account"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T03:25:54.000Z",
+              "updatedAt": "2026-07-28T03:25:54.000Z",
+              "uid": "35240-0a68f887-cc8e-464e-8408-d3424b8ba019"
+            },
+            {
+              "id": "16504940-2ade-441f-b56d-aa110c172616",
+              "name": "Error response. UserGems returns standard HTTP status codes (400, 401, 403, 404, 405, 406, 410, 429, 500, 503).",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "X-Api-Key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"domain\": \"<string>\",\n  \"reportName\": \"<string>\",\n  \"signal\": \"<string>\",\n  \"salesforceId\": \"<string>\",\n  \"customId\": \"<string>\",\n  \"custom\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/account",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "account"
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T03:25:54.000Z",
+              "updatedAt": "2026-07-28T03:25:54.000Z",
+              "uid": "35240-16504940-2ade-441f-b56d-aa110c172616"
+            }
+          ],
+          "createdAt": "2026-07-28T03:25:54.000Z",
+          "updatedAt": "2026-07-28T03:25:54.000Z",
+          "uid": "35240-f19a62f8-93ca-43c5-a0e2-97d7a3c341c6"
+        },
+        {
+          "name": "Delete Account",
+          "id": "1944daff-1146-4c29-9a12-5887e7e80926",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/account?name=<string>&domain=<string>&reportName=<string>&signal=<string>&salesforceId=<string>&customId=<string>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "account"
+              ],
+              "query": [
+                {
+                  "description": "(Required) Account name as previously submitted.",
+                  "key": "name",
+                  "value": "<string>"
+                },
+                {
+                  "description": "(Required) Primary domain for the account.",
+                  "key": "domain",
+                  "value": "<string>"
+                },
+                {
+                  "description": "Report or workflow grouping the account belongs to.",
+                  "key": "reportName",
+                  "value": "<string>"
+                },
+                {
+                  "description": "Signal label originally attached to the account.",
+                  "key": "signal",
+                  "value": "<string>"
+                },
+                {
+                  "description": "Salesforce Account ID for cross-reference.",
+                  "key": "salesforceId",
+                  "value": "<string>"
+                },
+                {
+                  "description": "Customer-supplied identifier for cross-reference.",
+                  "key": "customId",
+                  "value": "<string>"
+                }
+              ]
+            },
+            "description": "Remove a previously added account. Identified by (name, domain); the\noptional reportName, signal, salesforceId, and customId fields scope the\ndeletion to a specific routing context.\n"
+          },
+          "response": [
+            {
+              "id": "1ba9cefc-2d2c-4db0-af0e-89b259bc9451",
+              "name": "Account deleted.",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "X-Api-Key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/account?name=<string>&domain=<string>&reportName=<string>&signal=<string>&salesforceId=<string>&customId=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "account"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Account name as previously submitted.",
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "(Required) Primary domain for the account.",
+                      "key": "domain",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Report or workflow grouping the account belongs to.",
+                      "key": "reportName",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Signal label originally attached to the account.",
+                      "key": "signal",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Salesforce Account ID for cross-reference.",
+                      "key": "salesforceId",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Customer-supplied identifier for cross-reference.",
+                      "key": "customId",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T03:25:54.000Z",
+              "updatedAt": "2026-07-28T03:25:54.000Z",
+              "uid": "35240-1ba9cefc-2d2c-4db0-af0e-89b259bc9451"
+            },
+            {
+              "id": "cc08ae50-7eb3-4e08-9d4f-248aba40cc52",
+              "name": "Error response. UserGems returns standard HTTP status codes (400, 401, 403, 404, 405, 406, 410, 429, 500, 503).",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "X-Api-Key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/account?name=<string>&domain=<string>&reportName=<string>&signal=<string>&salesforceId=<string>&customId=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "account"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Account name as previously submitted.",
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "(Required) Primary domain for the account.",
+                      "key": "domain",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Report or workflow grouping the account belongs to.",
+                      "key": "reportName",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Signal label originally attached to the account.",
+                      "key": "signal",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Salesforce Account ID for cross-reference.",
+                      "key": "salesforceId",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Customer-supplied identifier for cross-reference.",
+                      "key": "customId",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T03:25:54.000Z",
+              "updatedAt": "2026-07-28T03:25:54.000Z",
+              "uid": "35240-cc08ae50-7eb3-4e08-9d4f-248aba40cc52"
+            },
+            {
+              "id": "f6d0633f-c5ba-4edd-817f-dd3906ab5735",
+              "name": "Error response. UserGems returns standard HTTP status codes (400, 401, 403, 404, 405, 406, 410, 429, 500, 503).",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "X-Api-Key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/account?name=<string>&domain=<string>&reportName=<string>&signal=<string>&salesforceId=<string>&customId=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "account"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Account name as previously submitted.",
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "(Required) Primary domain for the account.",
+                      "key": "domain",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Report or workflow grouping the account belongs to.",
+                      "key": "reportName",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Signal label originally attached to the account.",
+                      "key": "signal",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Salesforce Account ID for cross-reference.",
+                      "key": "salesforceId",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Customer-supplied identifier for cross-reference.",
+                      "key": "customId",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T03:25:54.000Z",
+              "updatedAt": "2026-07-28T03:25:54.000Z",
+              "uid": "35240-f6d0633f-c5ba-4edd-817f-dd3906ab5735"
+            }
+          ],
+          "createdAt": "2026-07-28T03:25:54.000Z",
+          "updatedAt": "2026-07-28T03:25:54.000Z",
+          "uid": "35240-1944daff-1146-4c29-9a12-5887e7e80926"
+        }
+      ],
+      "id": "ebd7be35-805f-4031-820c-e434270eaf28",
+      "createdAt": "2026-07-28T03:25:54.000Z",
+      "updatedAt": "2026-07-28T03:25:54.000Z",
+      "uid": "35240-ebd7be35-805f-4031-820c-e434270eaf28"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "X-Api-Key",
+        "type": "string"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}",
+        "type": "string"
+      },
+      {
+        "key": "in",
+        "value": "header",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.usergems.com/v1"
+    }
+  ]
+}

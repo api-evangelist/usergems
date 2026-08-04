@@ -1,0 +1,487 @@
+{
+  "info": {
+    "_postman_id": "d6c7d226-aaa4-4030-ac64-9e9494f45bbf",
+    "name": "UserGems Accounts Contacts API",
+    "description": "The UserGems API lets customers programmatically add contacts to track for job\nchanges and add accounts to receive prospects for. It also exposes a privacy\ndelete endpoint used to honor data-subject removal requests. Requests are\nauthenticated with a customer-issued API key sent in the X-Api-Key header and\nare processed asynchronously \u2014 responses confirm enqueueing, not completion.\n\n\nContact Support:\n Name: UserGems\n Email: support@usergems.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T03:25:54.000Z",
+    "updatedAt": "2026-07-28T03:25:55.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-d6c7d226-aaa4-4030-ac64-9e9494f45bbf"
+  },
+  "item": [
+    {
+      "name": "contact",
+      "item": [
+        {
+          "name": "Add Contact",
+          "id": "f6de03cf-2893-4eca-9cb0-8b0c24d0c071",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"<email>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"fullName\": \"<string>\",\n  \"company\": \"<string>\",\n  \"relationshipType\": \"<string>\",\n  \"linkedinUrl\": \"<uri>\",\n  \"signal\": \"<string>\",\n  \"custom\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/contact",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "contact"
+              ]
+            },
+            "description": "Enqueue a contact for UserGems to track for job changes. The contact is\nidentified by email; optional fields enrich the tracked record with name,\ncompany, LinkedIn URL, relationship type, signal label, and up to 100\ncustom signal fields. The API returns immediately once the contact is\naccepted into the processing queue.\n"
+          },
+          "response": [
+            {
+              "id": "3a69fc56-95dc-4f46-8334-06db9b96e658",
+              "name": "Contact added to the processing queue.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "X-Api-Key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"<email>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"fullName\": \"<string>\",\n  \"company\": \"<string>\",\n  \"relationshipType\": \"<string>\",\n  \"linkedinUrl\": \"<uri>\",\n  \"signal\": \"<string>\",\n  \"custom\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/contact",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "contact"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T03:25:55.000Z",
+              "updatedAt": "2026-07-28T03:25:55.000Z",
+              "uid": "35240-3a69fc56-95dc-4f46-8334-06db9b96e658"
+            },
+            {
+              "id": "1215fca0-5298-4633-b329-84d2cb1dc8b9",
+              "name": "Error response. UserGems returns standard HTTP status codes (400, 401, 403, 404, 405, 406, 410, 429, 500, 503).",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "X-Api-Key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"<email>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"fullName\": \"<string>\",\n  \"company\": \"<string>\",\n  \"relationshipType\": \"<string>\",\n  \"linkedinUrl\": \"<uri>\",\n  \"signal\": \"<string>\",\n  \"custom\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/contact",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "contact"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T03:25:55.000Z",
+              "updatedAt": "2026-07-28T03:25:55.000Z",
+              "uid": "35240-1215fca0-5298-4633-b329-84d2cb1dc8b9"
+            },
+            {
+              "id": "b14a4ca2-383e-445f-bc83-52b38b5924dc",
+              "name": "Error response. UserGems returns standard HTTP status codes (400, 401, 403, 404, 405, 406, 410, 429, 500, 503).",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "X-Api-Key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"<email>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"fullName\": \"<string>\",\n  \"company\": \"<string>\",\n  \"relationshipType\": \"<string>\",\n  \"linkedinUrl\": \"<uri>\",\n  \"signal\": \"<string>\",\n  \"custom\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/contact",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "contact"
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T03:25:55.000Z",
+              "updatedAt": "2026-07-28T03:25:55.000Z",
+              "uid": "35240-b14a4ca2-383e-445f-bc83-52b38b5924dc"
+            }
+          ],
+          "createdAt": "2026-07-28T03:25:55.000Z",
+          "updatedAt": "2026-07-28T03:25:55.000Z",
+          "uid": "35240-f6de03cf-2893-4eca-9cb0-8b0c24d0c071"
+        },
+        {
+          "name": "Delete Contact",
+          "id": "3fb86ea6-10ca-4932-87c4-3e13777f0c0a",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/contact?email=<email>&relationshipType=<string>&signal=<string>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "contact"
+              ],
+              "query": [
+                {
+                  "description": "(Required) Email address of the contact to remove.",
+                  "key": "email",
+                  "value": "<email>"
+                },
+                {
+                  "description": "Restrict deletion to a single relationship type bucket.",
+                  "key": "relationshipType",
+                  "value": "<string>"
+                },
+                {
+                  "description": "Restrict deletion to a single signal label.",
+                  "key": "signal",
+                  "value": "<string>"
+                }
+              ]
+            },
+            "description": "Remove a contact from UserGems' tracked list. The contact is identified\nby email; relationshipType and signal narrow the deletion to a specific\nscope so the same email can remain tracked under other relationship or\nsignal combinations.\n"
+          },
+          "response": [
+            {
+              "id": "72f3b53f-07cf-4729-815b-382ed4f3dbfe",
+              "name": "Contact deleted from the tracked list.",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "X-Api-Key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/contact?email=<email>&relationshipType=<string>&signal=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "contact"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Email address of the contact to remove.",
+                      "key": "email",
+                      "value": "<email>"
+                    },
+                    {
+                      "description": "Restrict deletion to a single relationship type bucket.",
+                      "key": "relationshipType",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Restrict deletion to a single signal label.",
+                      "key": "signal",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T03:25:55.000Z",
+              "updatedAt": "2026-07-28T03:25:55.000Z",
+              "uid": "35240-72f3b53f-07cf-4729-815b-382ed4f3dbfe"
+            },
+            {
+              "id": "699c2bd3-7bdc-4b76-ba5a-2c07e78a843e",
+              "name": "Error response. UserGems returns standard HTTP status codes (400, 401, 403, 404, 405, 406, 410, 429, 500, 503).",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "X-Api-Key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/contact?email=<email>&relationshipType=<string>&signal=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "contact"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Email address of the contact to remove.",
+                      "key": "email",
+                      "value": "<email>"
+                    },
+                    {
+                      "description": "Restrict deletion to a single relationship type bucket.",
+                      "key": "relationshipType",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Restrict deletion to a single signal label.",
+                      "key": "signal",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T03:25:55.000Z",
+              "updatedAt": "2026-07-28T03:25:55.000Z",
+              "uid": "35240-699c2bd3-7bdc-4b76-ba5a-2c07e78a843e"
+            },
+            {
+              "id": "95c3a3d7-7218-4455-9ccc-f5b9f8660cd5",
+              "name": "Error response. UserGems returns standard HTTP status codes (400, 401, 403, 404, 405, 406, 410, 429, 500, 503).",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "X-Api-Key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/contact?email=<email>&relationshipType=<string>&signal=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "contact"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Email address of the contact to remove.",
+                      "key": "email",
+                      "value": "<email>"
+                    },
+                    {
+                      "description": "Restrict deletion to a single relationship type bucket.",
+                      "key": "relationshipType",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Restrict deletion to a single signal label.",
+                      "key": "signal",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T03:25:55.000Z",
+              "updatedAt": "2026-07-28T03:25:55.000Z",
+              "uid": "35240-95c3a3d7-7218-4455-9ccc-f5b9f8660cd5"
+            }
+          ],
+          "createdAt": "2026-07-28T03:25:55.000Z",
+          "updatedAt": "2026-07-28T03:25:55.000Z",
+          "uid": "35240-3fb86ea6-10ca-4932-87c4-3e13777f0c0a"
+        }
+      ],
+      "id": "11d8a011-b902-4903-ad20-d62e47572c0b",
+      "createdAt": "2026-07-28T03:25:55.000Z",
+      "updatedAt": "2026-07-28T03:25:55.000Z",
+      "uid": "35240-11d8a011-b902-4903-ad20-d62e47572c0b"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "X-Api-Key",
+        "type": "string"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}",
+        "type": "string"
+      },
+      {
+        "key": "in",
+        "value": "header",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.usergems.com/v1"
+    }
+  ]
+}

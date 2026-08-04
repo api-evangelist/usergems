@@ -1,0 +1,18 @@
+{
+  "provider": "usergems",
+  "sources": [
+    "usergems-accounts-api-openapi.yml",
+    "usergems-contacts-api-openapi.yml",
+    "usergems-privacy-api-openapi.yml"
+  ],
+  "outputs": [
+    "usergems-accounts-api-openapi.yml",
+    "usergems-contacts-api-openapi.yml",
+    "usergems-privacy-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
