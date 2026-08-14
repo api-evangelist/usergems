@@ -7,9 +7,14 @@ description: >-
   (job changes, contact-level intent, M&A, hiring, web visits), Gem-E AI agents for prospect list building and email
   personalization, and custom AI scoring trained on 600+ closed-won patterns. UserGems exposes a public REST API at
   api.usergems.com/v1 that lets customers programmatically add and remove contacts to track for job changes, add and
-  remove target accounts, and honor data-subject deletion requests. The API uses an X-Api-Key header for authentication
-  and processes submissions asynchronously. Native integrations include Salesforce, HubSpot, Microsoft Dynamics,
-  Outreach, Salesloft, Gong Engage, Marketo, LinkedIn Ads, Meta Ads, and Google Ads.
+  remove target accounts, and honor data-subject deletion requests. That API is deliberately write-only — there are no
+  read or GET endpoints — authenticates with a single company-wide X-Api-Key header, is capped at 20 requests per second
+  with one record per request, and acknowledges enqueueing rather than completion. UserGems also ships a hosted remote
+  MCP server at app.usergems.com/mcp/usergems, in gated early access as of August 2026, that lets agents in Claude or
+  ChatGPT search accounts and prospects, pull signal and score history, run research, draft Gem-E messages, and build and
+  run campaigns including CRM writes, sequence enrollment and ad-audience sync — authorized with OAuth 2.0, dynamic
+  client registration, PKCE S256 and a single mcp:use scope. Native integrations include Salesforce, HubSpot, Microsoft
+  Dynamics, Outreach, Salesloft, Gong Engage, Marketo, LinkedIn Ads, Meta Ads, and Google Ads.
 tags:
   - Sales Intelligence
   - Outbound
@@ -22,6 +27,8 @@ tags:
   - CRM
   - Revenue Operations
   - GTM
+  - MCP
+  - AI Agents
 kind: contract
 accessModel:
   pricing: unknown
@@ -40,18 +47,23 @@ image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/usergems.p
 access: 3rd-Party
 position: Consuming
 created: '2026-05-25'
-modified: '2026-05-25'
+modified: '2026-08-13'
 specificationVersion: '0.16'
 apis:
 - aid: usergems:usergems-accounts-api
   name: UserGems Accounts API
   description: Add and remove accounts UserGems should source prospects against.
   humanURL: https://app.usergems.com/api/documentation
+  baseURL: https://api.usergems.com/v1
   tags:
   - Accounts
   properties:
   - type: OpenAPI
     url: openapi/usergems-accounts-api-openapi.yml
+  - type: Overlay
+    url: overlays/usergems-accounts-api-overlay.yaml
+  - type: AgentSkill
+    url: skills/usergems-manage-target-accounts.md
   - type: Documentation
     url: https://app.usergems.com/api/documentation
   - type: Documentation
@@ -74,11 +86,16 @@ apis:
   name: UserGems Contacts API
   description: Add and remove contacts UserGems should track for job changes.
   humanURL: https://app.usergems.com/api/documentation
+  baseURL: https://api.usergems.com/v1
   tags:
   - Contacts
   properties:
   - type: OpenAPI
     url: openapi/usergems-contacts-api-openapi.yml
+  - type: Overlay
+    url: overlays/usergems-contacts-api-overlay.yaml
+  - type: AgentSkill
+    url: skills/usergems-track-champion-contacts.md
   - type: Documentation
     url: https://app.usergems.com/api/documentation
   - type: Documentation
@@ -101,11 +118,16 @@ apis:
   name: UserGems Privacy API
   description: Honor data-subject deletion requests for tracked contacts.
   humanURL: https://app.usergems.com/api/documentation
+  baseURL: https://api.usergems.com/v1
   tags:
   - Privacy
   properties:
   - type: OpenAPI
     url: openapi/usergems-privacy-api-openapi.yml
+  - type: Overlay
+    url: overlays/usergems-privacy-api-overlay.yaml
+  - type: AgentSkill
+    url: skills/usergems-honor-erasure-request.md
   - type: Documentation
     url: https://app.usergems.com/api/documentation
   - type: Documentation
@@ -124,6 +146,36 @@ apis:
     url: examples/usergems-privacy-delete-example.json
   - type: SpectralRules
     url: rules/usergems-rules.yml
+- aid: usergems:usergems-mcp
+  name: UserGems MCP
+  description: >-
+    Hosted remote MCP server that lets an agent in Claude, ChatGPT or any
+    MCP-compatible client work against the customer's own UserGems workspace —
+    searching accounts and prospects, pulling signal and score history, running
+    account research, drafting Gem-E messages, and building, editing and running
+    campaigns including CRM writes, sequence enrollment and ad-audience sync.
+    OAuth 2.0 with dynamic client registration, PKCE S256 and a single mcp:use
+    scope delegating the signed-in user's own UserGems permissions. In gated
+    early access as of August 2026.
+  humanURL: https://www.usergems.com/product/mcp
+  baseURL: https://app.usergems.com/mcp/usergems
+  tags:
+  - MCP
+  - Agents
+  - GTM
+  properties:
+  - type: MCPServer
+    url: mcp/usergems-mcp.yml
+  - type: ToolCrosswalk
+    url: mcp/usergems-tool-crosswalk.yml
+  - type: Documentation
+    url: https://help.usergems.com/article/mcp-early-access-claude
+  - type: Documentation
+    url: https://help.usergems.com/article/mcp-early-access-chatgpt
+  - type: GettingStarted
+    url: https://help.usergems.com/article/mcp-early-access-claude
+  - type: OAuthScopes
+    url: scopes/usergems-scopes.yml
 common:
   - type: PostmanWorkspace
     url: https://www.postman.com/kinlaneapi/usergems/overview
@@ -137,12 +189,52 @@ common:
     url: security/usergems-domain-security.yml
   - type: Authentication
     url: authentication/usergems-authentication.yml
+  - type: MCPServer
+    url: mcp/usergems-mcp.yml
+  - type: ToolCrosswalk
+    url: mcp/usergems-tool-crosswalk.yml
+  - type: OAuthScopes
+    url: scopes/usergems-scopes.yml
+  - type: WellKnown
+    url: well-known/usergems-well-known.yml
+  - type: ContentSignal
+    url: well-known/usergems-robots.txt
+  - type: LLMsTxt
+    url: llms/usergems-llms.txt
+  - type: Packages
+    url: packages/usergems-packages.yml
+  - type: Conventions
+    url: conventions/usergems-conventions.yml
+  - type: ErrorCatalog
+    url: errors/usergems-problem-types.yml
+  - type: Lifecycle
+    url: lifecycle/usergems-lifecycle.yml
+  - type: Conformance
+    url: conformance/usergems-conformance.yml
+  - type: Compliance
+    url: https://www.usergems.com/data-security
+  - type: Security
+    url: https://www.usergems.com/legal-security/security
+  - type: DataModel
+    url: data-model/usergems-data-model.yml
+  - type: Webhooks
+    url: asyncapi/usergems-webhooks.yml
+  - type: AgentSkill
+    url: skills/_index.yml
   - type: Website
     url: https://www.usergems.com
+  - type: DeveloperPortal
+    url: https://app.usergems.com/api/documentation
+  - type: APIReference
+    url: https://app.usergems.com/api/documentation
+  - type: GettingStarted
+    url: https://help.usergems.com/article/using-the-usergems-api
   - type: Portal
-    url: https://www.usergems.com/product
+    url: https://www.usergems.com/product/overview
   - type: Documentation
     url: https://app.usergems.com/api/documentation
+  - type: Documentation
+    url: https://help.usergems.com/article/using-the-usergems-api
   - type: Documentation
     url: https://help.usergems.com
   - type: Documentation
@@ -155,8 +247,10 @@ common:
     url: https://help.usergems.com/article/usergems-outreach-configuration
   - type: Product
     url: https://www.usergems.com/product/api
-  - type: Signup
-    url: https://www.usergems.com/demo
+  - type: SignUp
+    url: https://www.usergems.com/contact
+  - type: Login
+    url: https://app.usergems.com/login
   - type: Pricing
     url: https://www.usergems.com/pricing
   - type: Blog
@@ -170,15 +264,17 @@ common:
   - type: Support
     url: mailto:support@usergems.com
   - type: PrivacyPolicy
-    url: https://www.usergems.com/legal/privacy
+    url: https://www.usergems.com/legal-security/privacy-policy
   - type: TermsOfService
-    url: https://www.usergems.com/legal/terms
+    url: https://www.usergems.com/legal-security/terms
   - type: TrustCenter
-    url: https://www.usergems.com/security
+    url: https://trust.usergems.com
   - type: LinkedIn
     url: https://www.linkedin.com/company/usergems
   - type: Twitter
-    url: https://twitter.com/usergems
+    url: https://x.com/usergems
+  - type: YouTube
+    url: https://www.youtube.com/@UserGems
   - type: GitHubOrganization
     url: https://github.com/usergems
   - type: Plans
@@ -237,6 +333,11 @@ common:
       - https://app.usergems.com/api/documentation
       - https://help.usergems.com/article/how-many-salesforce-api-calls-does-usergems-use
     updated: '2026-05-25'
+x-enrichment:
+  date: '2026-08-13'
+  status: enriched
+  artifacts_added: 23
+  pass: local-v1
 maintainers:
   - FN: Kin Lane
     email: info@apievangelist.com
