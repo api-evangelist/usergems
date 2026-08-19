@@ -1,0 +1,47 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the UserGems Accounts API
+  version: 1.0.0
+extends: openapi/usergems-accounts-api-openapi.yml
+x-generated: '2026-08-13'
+x-method: generated
+x-source: >-
+  https://app.usergems.com/api/documentation +
+  https://help.usergems.com/article/using-the-usergems-api
+x-note: >-
+  Captures API Evangelist enhancements over the harvested Accounts contract.
+  Every change below is grounded in a UserGems-published statement; the overlay
+  exists so the enhancement is auditable separately from the spec it applies to.
+actions:
+  - target: $.info
+    update:
+      x-apievangelist-profile: https://apis.io/provider/usergems/
+      x-api-evangelist-source: https://app.usergems.com/api/documentation
+      x-write-only: true
+      x-async-ack: >-
+        A 200 acknowledges enqueueing, not completion. There is no job id and no
+        status endpoint.
+  - target: $.paths['/account'].post
+    update:
+      x-rate-limit: 20 requests per second (shared per company API key)
+      x-bulk-supported: false
+      x-idempotency: >-
+        No idempotency key. Matching is by natural key (domain), so a replayed
+        POST upserts rather than duplicating.
+      x-known-reference-defect: >-
+        reportId is required in practice even though the Developer Hub lists it
+        as optional; omitting it returns 422.
+  - target: $.paths['/account'].delete
+    update:
+      x-known-reference-defect: >-
+        Asymmetric with the POST — deleting uses reportName where adding uses
+        reportId.
+      x-body-vs-query: >-
+        The Developer Hub labels these fields "Query Parameters" while its own
+        curl example sends them as a JSON request body. Prefer the curl example.
+  - target: $.components.securitySchemes.ApiKeyAuth
+    update:
+      x-key-granularity: >-
+        One key per company, shared across all integrations. No per-system keys,
+        no sandbox key, no auto-rotation.
+      x-key-location: Settings → Connected Applications (UserGems app)

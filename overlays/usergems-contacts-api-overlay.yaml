@@ -1,0 +1,49 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the UserGems Contacts API
+  version: 1.0.0
+extends: openapi/usergems-contacts-api-openapi.yml
+x-generated: '2026-08-13'
+x-method: generated
+x-source: >-
+  https://app.usergems.com/api/documentation +
+  https://help.usergems.com/article/using-the-usergems-api
+actions:
+  - target: $.info
+    update:
+      x-apievangelist-profile: https://apis.io/provider/usergems/
+      x-api-evangelist-source: https://app.usergems.com/api/documentation
+      x-write-only: true
+      x-async-ack: >-
+        A 200 acknowledges enqueueing, not completion. A contact pushed for
+        job-change tracking does not appear in the prospects overview until a job
+        change actually fires.
+  - target: $.paths['/contact'].post
+    update:
+      x-rate-limit: 20 requests per second (shared per company API key)
+      x-bulk-supported: false
+      x-matching-key: email
+      x-signal-fields: >-
+        Up to 100 additional top-level string properties may be sent per contact.
+        Each becomes a filterable Signal Field usable in audiences, scoring and
+        Gem-E Conditional Instructions. Names must be distinct.
+      x-relationship-type-values: >-
+        Closed Won Opp Contact, Champion, User, Open Opp Contact, Closed Lost Opp
+        Contact, Prospect, Other, plus any type created manually in UserGems
+        settings.
+  - target: $.paths['/contact'].delete
+    update:
+      x-destructive-default: >-
+        Omitting both relationshipType and signal removes the contact from ALL
+        relationship types and ALL signals, not just one. Scope the call
+        deliberately.
+      x-body-vs-query: >-
+        Documented as "Query Parameters" but the provider's own curl example
+        sends a JSON body.
+  - target: $.components.securitySchemes.ApiKeyAuth
+    update:
+      x-key-granularity: >-
+        One key per company, shared across all integrations; no sandbox key.
+      x-leak-blast-radius: >-
+        Provider-stated: because the API is write-only, a leaked key cannot read
+        data — the risk is unauthorized writes.

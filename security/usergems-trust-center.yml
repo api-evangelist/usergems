@@ -1,14 +1,62 @@
-generated: '2026-07-11'
+generated: '2026-08-13'
 method: searched
 probe: true
 source: https://trust.usergems.com/
 url: https://trust.usergems.com/
+also:
+  - https://www.usergems.com/data-security
+  - https://www.usergems.com/legal-security/security
+description: >-
+  UserGems runs a hosted trust center with a document library available on
+  request, plus a public data-security page. Certifications and frameworks below
+  are read from the trust center's own published highlights and from the
+  data-security page.
 certifications:
-- SOC 2
-- GDPR
+  - SOC 2 Type II
+  - GDPR
+  - CCPA
+  - EU AI Act (limited risk)
+frameworks:
+  - CAIQ v4.0.2 (self-assessment)
+  - CAIQ v4.1.0 (self-assessment)
+  - SIG Core v1.2
+document_categories:
+  - Self-assessments (CAIQ, SIG Core)
+  - App Security (Responsible Disclosure, Application Penetration Testing, Bot Detection)
+  - Access Control (access log management, automated account management)
+  - Data Privacy (breach notifications, data into/out of system)
+  - Legal (Subprocessors, Certificate of Insurance, Data Processing Agreement)
+  - Endpoint Security (EDR, anti-malware)
+  - AI (AI Overview, AI Policies, Risk Profile, Impact Level)
+security_posture:
+  hosting: AWS (US), with EU data-transfer documentation in the Data Privacy section
+  runtime_protection: CrowdStrike managed 24/7 runtime protection
+  encryption_at_rest: AES-256, with KMS-based protection of secrets
+  encryption_in_transit: TLS + HSTS
+  penetration_testing: independent third party, on major change and at least annually
+public_pages:
+  - url: https://www.usergems.com/data-security
+    http_status: 200
+    finding: SOC 2 Type 2 Certified, GDPR Compliant, regular penetration testing
+  - url: https://www.usergems.com/gdpr
+    http_status: 200
+  - url: https://www.usergems.com/legal-security/data-processing-addendum
+    http_status: 301
+    finding: redirects to a published DPA PDF
 evidence:
-- source: https://trust.usergems.com/
-  keywords:
-  - soc 2
-  - trust center
-  - gdpr
+  - source: https://trust.usergems.com/
+    http_status: 200
+    keywords:
+      - SOC 2 Type II
+      - GDPR
+      - CCPA
+      - EU AI Act
+      - CAIQ
+      - SIG Core
+      - trust center
+  - source: https://www.usergems.com/data-security
+    http_status: 200
+    keywords:
+      - SOC 2 Type 2 Certified
+      - GDPR Compliant
+      - penetration testing

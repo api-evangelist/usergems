@@ -1,0 +1,30 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the UserGems Privacy API
+  version: 1.0.0
+extends: openapi/usergems-privacy-api-openapi.yml
+x-generated: '2026-08-13'
+x-method: generated
+x-source: >-
+  https://app.usergems.com/api/documentation +
+  https://www.usergems.com/legal-security/security
+actions:
+  - target: $.info
+    update:
+      x-apievangelist-profile: https://apis.io/provider/usergems/
+      x-api-evangelist-source: https://app.usergems.com/api/documentation
+      x-regulatory-purpose: GDPR and CCPA right-to-erasure
+  - target: $.paths['/privacy/delete'].post
+    update:
+      x-scope: >-
+        Global erasure — removes the contact from all UserGems tracking surfaces,
+        not from a single signal, report or relationship type.
+      x-irreversible: true
+      x-rate-limit: 20 requests per second (shared per company API key)
+      x-agent-guidance: >-
+        Treat as a high-consequence operation. There is no read operation to
+        confirm the subject exists beforehand and no read operation to confirm
+        erasure afterwards; the only response is an enqueueing acknowledgement.
+  - target: $.components.securitySchemes.ApiKeyAuth
+    update:
+      x-key-granularity: One key per company; the same key authorizes erasure and ingestion.

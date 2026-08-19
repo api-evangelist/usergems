@@ -1,0 +1,108 @@
+generated: '2026-08-13'
+method: derived
+source: mcp/usergems-mcp.yml + openapi/usergems-*-openapi.yml
+description: >-
+  Binding between the UserGems MCP surface and the UserGems REST API. The headline
+  finding is that the two surfaces barely overlap: the REST API is a write-only
+  ingestion pipe (5 operations, no GET at all — "The API is write-only. You push
+  data in; you cannot query or pull data back out."), while the MCP server is a
+  read-and-act surface over the campaign, audience, scoring and Gem-E layer that
+  has no public REST equivalent. Nothing the MCP server does can be reproduced
+  through the published REST contract, and nothing the REST API does is named as
+  an MCP capability. Both directions are real divergence, recorded rather than
+  papered over.
+
+surfaces:
+  openapi:
+    files:
+      - openapi/usergems-contacts-api-openapi.yml
+      - openapi/usergems-accounts-api-openapi.yml
+      - openapi/usergems-privacy-api-openapi.yml
+    base_url: https://api.usergems.com/v1
+    auth: apiKey header X-Api-Key
+    gated: false
+    note: Reference is public at https://app.usergems.com/api/documentation.
+  graphql:
+    endpoint: null
+    note: UserGems publishes no GraphQL surface.
+  mcp:
+    url: https://app.usergems.com/mcp/usergems
+    auth: oauth (scope mcp:use)
+    gated: true
+    note: >-
+      tools/list returns 401 with an RFC 9728 challenge, so canonical tool names
+      and inputSchemas are not observable anonymously. Rows below are bound by
+      published capability label and semantics, never by an observed tool name —
+      confidence is set accordingly.
+
+crosswalk: []
+
+mcp_only:
+  - tool: Search accounts & prospects
+    reason: No read/GET operation exists anywhere in the REST contract.
+  - tool: Get account info
+    reason: >-
+      Firmographics, buying stage, signals, funding and news are not exposed by
+      any REST operation.
+  - tool: Pull intel
+    reason: Signal/score history and Gong-derived call intel have no REST surface.
+  - tool: Rank best prospects
+    reason: Scoring output is not retrievable over REST.
+  - tool: Run account research
+    reason: Research agent is an MCP/product capability with no REST equivalent.
+  - tool: Draft personalized emails
+    reason: Gem-E message generation has no REST endpoint.
+  - tool: Set up a campaign (guided)
+    reason: Campaign objects are not modelled in the REST API.
+  - tool: See what's running
+    reason: No campaign listing/read operation over REST.
+  - tool: Create / edit / clone campaigns
+    reason: No campaign lifecycle operations over REST.
+  - tool: Configure campaign actions
+    reason: >-
+      Sequence enrollment, CRM writes, Slack/email alerts, ad-audience sync and
+      the outbound webhook action are configured in-product only.
+  - tool: Build & inspect audiences
+    reason: Audience filters and counts have no REST surface.
+  - tool: Set sending controls
+    reason: Sending caps are in-product settings.
+  - tool: Manage & test Gem-E
+    reason: Instruction/content-library management has no REST surface.
+  - tool: Research at scale
+    reason: Bulk research across an audience has no REST surface.
+
+rest_only:
+  - capability: Contact ingestion
+    operations: [addContact, deleteContact]
+    spec: openapi/usergems-contacts-api-openapi.yml
+    reason: >-
+      Pushing first-party contacts for job-change tracking is an API-key
+      ingestion path; no MCP capability is documented as writing raw contacts in.
+  - capability: Account ingestion
+    operations: [addAccount, deleteAccount]
+    spec: openapi/usergems-accounts-api-openapi.yml
+    reason: >-
+      Same ingestion path for target accounts. The announced (not yet shipped)
+      MCP "Data Agent" is the nearest future analogue — recorded as announced,
+      not as a binding.
+  - capability: Privacy erasure
+    operations: [privacyDelete]
+    spec: openapi/usergems-privacy-api-openapi.yml
+    reason: >-
+      GDPR/CCPA right-to-erasure is deliberately an out-of-band API call, not an
+      agent-callable tool.
+
+coverage:
+  mcp_capabilities_published: 14
+  mcp_tools_named_canonically: 0
+  mcp_tools_bound_to_rest: 0
+  mcp_only: 14
+  rest_operations_total: 5
+  rest_operations_with_a_tool: 0
+  rest_only: 5
+  overlap: 0
+  note: >-
+    Zero overlap is the finding, not a gap in this file. An agent that needs to
+    both ingest first-party signal data AND run a campaign must hold two
+    different credentials (an X-Api-Key issued per company, and a per-user OAuth
+    token scoped mcp:use) against two different hosts.

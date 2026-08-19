@@ -1,0 +1,41 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "UserGems Accounts Privacy API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-Api-Key",
+      "value": "{{X-Api-Key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Privacy",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Privacy Delete",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.usergems.com/v1/privacy/delete",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Honor a data-subject deletion request. Removes the contact identified by\nemail from all UserGems tracking surfaces. Designed to satisfy GDPR and\nCCPA right-to-erasure obligations.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

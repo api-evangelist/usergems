@@ -3,31 +3,61 @@ specificationVersion: '0.1'
 schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
 provider: UserGems
 providerId: usergems
+generated: '2026-08-13'
+method: searched
+source: https://help.usergems.com/article/using-the-usergems-api
 created: '2026-05-25'
-modified: '2026-05-25'
+modified: '2026-08-13'
 reconciled: false
 tags:
   - Rate Limiting
   - Quotas
   - Salesforce
 description: |
-  UserGems does not publish explicit request-rate limits on its outbound REST
-  API. The platform does, however, enforce a downstream Salesforce-side quota
-  of 20,000 API calls per Salesforce instance per 24-hour rolling window
-  across all UserGems products, with sync continuation the following day if
-  reached. Custom caps above or below 20K are negotiable through a Customer
-  Success Manager. Maximum platform throughput is approximately 1,000 job
-  changes per day per customer. The /v1 API surfaces a 429 status code per
-  the published error catalog (along with 400, 401, 403, 404, 405, 406, 410,
-  500, 503).
+  UserGems publishes one hard API rate limit — 20 requests per second, one record
+  per request — in the Help Center article "Using the UserGems API". It is not in
+  the Developer Hub reference, which lists only the 429 status code. Because
+  there is no bulk endpoint, that limit is also the ceiling on ingestion
+  throughput: 20 records/second is the maximum rate at which any first-party
+  system can push contacts or accounts into UserGems.
+
+  Separately, UserGems enforces a downstream Salesforce-side quota of 20,000 API
+  calls per Salesforce instance per 24-hour rolling window across all UserGems
+  products, with sync continuing the following day if reached. Custom caps above
+  or below 20K are negotiable through a Customer Success Manager. Maximum
+  platform throughput is approximately 1,000 job changes per day per customer.
+
+  The runtime signal is the gap: UserGems documents no X-RateLimit-*/RateLimit-*
+  response headers and no Retry-After, so a client that hits 429 has no published
+  way to learn its remaining budget or its reset time and must back off blindly.
 sources:
+  - https://help.usergems.com/article/using-the-usergems-api
   - https://help.usergems.com/article/how-many-salesforce-api-calls-does-usergems-use
   - https://app.usergems.com/api/documentation
 responseCodes:
   throttled: 429
   quotaExceeded: 429
+headers:
+  documented: false
+  rate_limit_headers: []
+  retry_after: false
+  note: >-
+    Neither the Developer Hub nor the Help Center documents any rate-limit
+    response header. Not observable anonymously either — every unauthenticated
+    call to api.usergems.com 302s to /404 before reaching the API.
 algorithm: rolling-window
 limits:
+  - scope: api-key
+    surface: https://api.usergems.com/v1
+    window: 1s
+    requests: 20
+    burst: null
+    description: |
+      Published API rate limit: 20 requests per second. One record per request —
+      there is no bulk endpoint — so this doubles as the ingestion throughput
+      ceiling. Applies to the single company-wide X-Api-Key; there is no
+      per-integration key, so all of a customer's systems share this budget.
+    source: https://help.usergems.com/article/using-the-usergems-api
   - scope: salesforce-instance
     window: 24h
     requests: 20000
@@ -55,5 +85,7 @@ customCaps:
   available: true
   channel: Customer Success Manager
   notes: |
-    Customers can request bespoke caps above or below the 20K default by
-    contacting their CSM.
+    Customers can request bespoke caps above or below the 20K Salesforce default
+    by contacting their CSM. The 20 req/s API limit is not documented as
+    negotiable.
+limit_count: 5

@@ -1,0 +1,109 @@
+generated: '2026-08-13'
+method: probed
+source: live GET of /.well-known/* on every UserGems host in apis.yml + OpenAPI servers[]
+description: >-
+  Well-known discovery probe across the UserGems hosts. The marketing host
+  (www.usergems.com) and help host serve no /.well-known documents at all, and
+  the API host (api.usergems.com) 302s every path to its own /404 page. The
+  application host (app.usergems.com) DOES serve a real RFC 8414 OAuth 2.0
+  authorization-server metadata document and an RFC 9728 protected-resource
+  metadata document — both belonging to the UserGems MCP server, whose OAuth
+  endpoints live under https://app.usergems.com/mcp/oauth/. That is the only
+  real /.well-known hit on this provider, and it is the anchor for
+  scopes/usergems-scopes.yml and mcp/usergems-mcp.yml.
+hosts:
+  - host: https://app.usergems.com
+    documents:
+      - path: /.well-known/oauth-authorization-server
+        spec: RFC 8414
+        status: 200
+        content_type: application/json
+        file: usergems-oauth-authorization-server.json
+      - path: /.well-known/oauth-protected-resource
+        spec: RFC 9728
+        status: 200
+        content_type: application/json
+        file: usergems-oauth-protected-resource.json
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+  - host: https://www.usergems.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+        note: Returns an "Invalid .well-known request" HTML stub for every path.
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/oauth-protected-resource
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+      - path: /llms.txt
+        status: 200
+        content_type: text/plain
+        file: ../llms/usergems-llms.txt
+      - path: /robots.txt
+        status: 200
+        content_type: text/plain
+        file: usergems-robots.txt
+        note: >-
+          Carries a Content-Signal declaration — "Content-Signal: search=yes,
+          ai-input=yes, ai-train=no" — plus explicit Allow rules for GPTBot,
+          ClaudeBot, Claude-User, Claude-SearchBot, PerplexityBot, CCBot,
+          Google-Extended, Applebot-Extended, Meta-ExternalAgent and
+          anthropic-ai. This is a published machine-readable AI consent signal.
+  - host: https://api.usergems.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 302
+        note: Every path on the API host 302s to https://api.usergems.com/404.
+      - path: /.well-known/oauth-authorization-server
+        status: 302
+      - path: /.well-known/oauth-protected-resource
+        status: 302
+      - path: /.well-known/api-catalog
+        status: 302
+      - path: /.well-known/agent-card.json
+        status: 302
+      - path: /.well-known/agent.json
+        status: 302
+  - host: https://help.usergems.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+      - path: /llms.txt
+        status: 200
+        content_type: text/plain
+        file: ../llms/usergems-help-llms.txt
+      - path: /robots.txt
+        status: 200
+summary:
+  hosts_probed: 4
+  documents_found: 2
+  security_txt: false
+  openid_configuration: false
+  api_catalog: false
+  agent_card: false
+  oauth_metadata: true
+  content_signal: true

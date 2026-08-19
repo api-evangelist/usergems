@@ -14,7 +14,7 @@ info:
     email: support@usergems.com
   license:
     name: UserGems Terms of Service
-    url: https://www.usergems.com/legal/terms
+    url: https://www.usergems.com/legal-security/terms
 servers:
   - url: https://api.usergems.com/v1
     description: Production
@@ -302,6 +302,7 @@ components:
       required:
         - name
         - domain
+        - reportId
       properties:
         name:
           type: string
@@ -309,9 +310,18 @@ components:
         domain:
           type: string
           description: Primary domain for the target company (e.g. example.com).
+        reportId:
+          type: string
+          description: >-
+            Id of the report the account should be added to. Required in practice:
+            the Developer Hub reference lists it as optional, but UserGems' own
+            Help Center states that omitting it fails with HTTP 422.
+            Source: https://help.usergems.com/article/using-the-usergems-api
         reportName:
           type: string
-          description: Report or workflow grouping the account belongs to.
+          description: >-
+            Report or workflow grouping the account belongs to. Adding an account
+            uses reportId; deleting one uses reportName.
         signal:
           type: string
           description: Signal label to associate with prospects routed for this account.
@@ -386,9 +396,9 @@ components:
     AddAccountExample:
       summary: Add a target account
       value:
+        reportId: '12345'
         name: Acme Inc
         domain: acme.com
-        reportName: Q2-Enterprise-ICP
         signal: hiring-vp-sales
         salesforceId: 0014x00000ABCDeAAA
     AddAccountAck:

@@ -1,0 +1,111 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  openapi/ + well-known/usergems-oauth-authorization-server.json +
+  https://www.usergems.com/data-security + https://trust.usergems.com
+description: >-
+  Cross-cutting standards conformance for UserGems. The REST API conforms to very
+  little beyond plain HTTP+JSON; the interesting conformance lives on the MCP
+  side, where UserGems implements the current OAuth discovery stack correctly —
+  RFC 8414 authorization-server metadata, RFC 9728 protected-resource metadata
+  with a WWW-Authenticate challenge, RFC 7591 dynamic client registration and
+  PKCE S256. Compliance certifications are published separately and are recorded
+  in security/usergems-trust-center.yml.
+standards:
+  - id: oauth2
+    conforms: true
+    evidence: >-
+      authorization_code + refresh_token grants advertised at
+      https://app.usergems.com/.well-known/oauth-authorization-server
+    scope: MCP server only
+  - id: rfc8414-oauth-authorization-server-metadata
+    conforms: true
+    evidence: 200 JSON document with issuer, authorization/token/registration endpoints
+  - id: rfc9728-oauth-protected-resource-metadata
+    conforms: true
+    evidence: >-
+      200 JSON at /.well-known/oauth-protected-resource, and a 401 challenge
+      carrying WWW-Authenticate: Bearer realm="mcp", resource_metadata="…"
+  - id: rfc7591-dynamic-client-registration
+    conforms: true
+    evidence: registration_endpoint https://app.usergems.com/mcp/oauth/register
+  - id: rfc7636-pkce
+    conforms: true
+    evidence: code_challenge_methods_supported ["S256"]
+  - id: mcp
+    conforms: true
+    evidence: >-
+      Hosted remote MCP server at https://app.usergems.com/mcp/usergems, JSON-RPC
+      over HTTP, documented for Claude and ChatGPT clients
+  - id: oidc
+    conforms: false
+    evidence: /.well-known/openid-configuration returns 404 on every host
+  - id: rfc9116-security-txt
+    conforms: false
+    evidence: /.well-known/security.txt returns 404 on every host
+  - id: rfc8594-sunset-header
+    conforms: false
+    evidence: no deprecation or sunset policy published
+  - id: rfc9457-problem-details
+    conforms: false
+    evidence: >-
+      Errors return a bare {"message": "..."} JSON body; no
+      application/problem+json anywhere in the spec or docs
+  - id: rfc9111-idempotency
+    conforms: false
+    evidence: no idempotency key or replay-safety mechanism documented
+  - id: openapi
+    conforms: true
+    evidence: >-
+      Not provider-published. The OpenAPI 3.1.0 documents in openapi/ are
+      API Evangelist derivations of the public Developer Hub reference; UserGems
+      itself publishes no machine-readable spec.
+    provider_published: false
+  - id: json-api
+    conforms: false
+  - id: odata
+    conforms: false
+  - id: scim
+    conforms: false
+  - id: fhir
+    conforms: false
+  - id: fapi
+    conforms: false
+  - id: psd2
+    conforms: false
+  - id: pagination
+    conforms: false
+    evidence: no collection reads exist, so no pagination contract
+  - id: content-signal
+    conforms: true
+    evidence: >-
+      https://www.usergems.com/robots.txt publishes
+      "Content-Signal: search=yes, ai-input=yes, ai-train=no" plus explicit
+      per-agent Allow rules
+  - id: llms-txt
+    conforms: true
+    evidence: >-
+      https://www.usergems.com/llms.txt and https://help.usergems.com/llms.txt
+      both return 200 with substantive, hand-authored guidance
+compliance_programs:
+  - id: soc2-type2
+    published: true
+    source: https://www.usergems.com/data-security
+  - id: gdpr
+    published: true
+    source: https://www.usergems.com/gdpr
+  - id: ccpa
+    published: true
+    source: https://www.usergems.com/legal-security/security
+  - id: eu-ai-act
+    published: true
+    classification: limited risk
+    source: https://trust.usergems.com
+  - id: csa-caiq
+    published: true
+    versions: [v4.0.2, v4.1.0]
+    source: https://trust.usergems.com
+  - id: sig-core
+    published: true
+    version: v1.2
+    source: https://trust.usergems.com

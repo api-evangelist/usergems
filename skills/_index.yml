@@ -1,0 +1,39 @@
+generated: '2026-08-13'
+method: generated
+source: >-
+  openapi/usergems-*-openapi.yml grounded against
+  https://app.usergems.com/api/documentation and
+  https://help.usergems.com/article/using-the-usergems-api
+description: >-
+  Packaged Agent Skills for the UserGems REST API. Every operationId referenced
+  below exists verbatim in the linked spec. UserGems publishes no AGENTS.md or
+  first-party skill files, so these are API Evangelist generations; they encode
+  the conventions, destructive-default warnings and retry rules captured in
+  conventions/ and errors/ so an agent calling this write-only API does not learn
+  them the hard way.
+skills:
+  - file: usergems-track-champion-contacts.md
+    name: Track champion contacts in UserGems
+    api: openapi/usergems-contacts-api-openapi.yml
+    operations: [addContact, deleteContact]
+    consequence: write
+  - file: usergems-manage-target-accounts.md
+    name: Manage UserGems target accounts
+    api: openapi/usergems-accounts-api-openapi.yml
+    operations: [addAccount, deleteAccount]
+    consequence: write
+  - file: usergems-honor-erasure-request.md
+    name: Honor a UserGems data-subject erasure request
+    api: openapi/usergems-privacy-api-openapi.yml
+    operations: [privacyDelete]
+    consequence: irreversible
+    human_in_the_loop: recommended
+coverage:
+  operations_total: 5
+  operations_covered: 5
+notes:
+  - >-
+    No skill is written for the UserGems MCP server: its tool names and input
+    schemas are auth-gated (tools/list returns 401), and grounding a skill in
+    capability labels rather than real tool identifiers would teach an agent to
+    call tools that may not exist under those names.

@@ -1,0 +1,148 @@
+generated: '2026-08-13'
+method: searched
+source: https://help.usergems.com/article/using-the-usergems-api
+docs:
+  - https://app.usergems.com/api/documentation
+  - https://help.usergems.com/article/using-the-usergems-api
+description: >-
+  Cross-cutting request/response semantics for the UserGems REST API. This is a
+  deliberately narrow contract: five write-or-delete operations, no reads, no
+  bulk, no pagination, no idempotency key, and a plain {"message": "..."} ack
+  envelope. Recording what is absent matters as much as what is present, because
+  an agent planning retries against this API has no safe replay primitive.
+
+authentication:
+  style: api-key-header
+  header: X-Api-Key
+  scope: one key per company, shared across all integrations
+  ref: authentication/usergems-authentication.yml
+
+idempotency:
+  supported: false
+  header: null
+  note: >-
+    UserGems documents no idempotency key, no request-id echo, and no dedupe
+    window. Matching is by natural key instead — "email is the matching key" for
+    contacts, "domain is the matching key" for accounts — so a repeated POST
+    upserts the same record rather than creating a duplicate, but this is a
+    data-model property, not a replay-safety guarantee, and it does not cover the
+    DELETE operations. A retried DELETE after a network timeout cannot be
+    distinguished from a second deliberate delete.
+
+pagination:
+  supported: false
+  note: >-
+    Not applicable — the API exposes no collection reads. "Pulling data out via
+    API — there are no read or GET endpoints."
+
+bulk:
+  supported: false
+  note: >-
+    "Bulk uploads — one record per POST request." Throughput is governed solely
+    by the rate limit.
+
+processing_model:
+  async: true
+  semantics: >-
+    Responses confirm ENQUEUEING, not completion. A 200 with
+    {"message":"Contact added to queue"} means accepted for processing; there is
+    no job id, no status endpoint and no callback to confirm the record landed.
+  consequence: >-
+    An agent cannot verify the outcome of a write through this API. Confirmation
+    happens in-product (the record appears against the Custom Signal) or, for
+    egress, through the campaign "Send to Webhook" action.
+  note: >-
+    A contact pushed for job-change tracking does not appear in the prospects
+    overview until a job change actually fires.
+
+request:
+  content_type: application/json
+  methods_used: [POST, DELETE]
+  body_on_delete: true
+  body_on_delete_note: >-
+    Both DELETE operations are documented with a JSON request body in the
+    provider's own curl examples while the Developer Hub labels the same fields
+    "Query Parameters". This is a real ambiguity in the published reference; the
+    curl examples are the more reliable of the two.
+
+response_envelope:
+  shape: '{"message": "<human-readable confirmation>"}'
+  machine_readable_code: false
+  note: >-
+    Success and error both return a flat message string. There is no error code
+    field documented in the Developer Hub error table, no problem+json, and no
+    field-level validation detail.
+
+errors:
+  format: bare-json-message
+  rfc9457: false
+  catalog: errors/usergems-problem-types.yml
+  statuses: [400, 401, 403, 404, 405, 406, 410, 422, 429, 500, 503]
+
+rate_limiting:
+  limit: 20 requests per second
+  scope: api key (one per company)
+  headers_returned: undocumented
+  retry_after: undocumented
+  status_on_exhaustion: 429
+  ref: rate-limits/usergems-rate-limits.yml
+  note: >-
+    UserGems publishes the number but not the runtime signal — no documented
+    X-RateLimit-*/RateLimit-* headers and no documented Retry-After — so a client
+    must implement blind backoff on 429.
+
+versioning:
+  scheme: uri-path
+  current: v1
+  header_negotiation: false
+  deprecation_policy: none published
+  ref: lifecycle/usergems-lifecycle.yml
+
+field_expansion:
+  supported: false
+
+metadata:
+  supported: true
+  mechanism: >-
+    Two distinct extension points. `custom` is a free-form string round-tripped
+    back to the caller when UserGems reports a job change or prospect. Signal
+    Fields are arbitrary additional top-level string properties — up to 100 per
+    contact, each with a distinct name — that become filterable/personalizable
+    signal data in-product.
+  agent_note: >-
+    Signal Fields are how a caller attaches business context (e.g. "Close Date":
+    "2025-12-05", "creditsUsed": 1250) that Gem-E can then reference in
+    Conditional Instructions.
+
+tracing:
+  request_id_header: none documented
+  correlation: >-
+    The `custom` field is the only documented correlation handle, and it returns
+    on the outbound event rather than on the API response.
+
+testing:
+  sandbox: false
+  note: >-
+    There is no UserGems sandbox instance and no test API key — "There is no way
+    to … create a sandbox key for testing", and "there is no UserGems Sandbox
+    instance". The documented sandbox flow is a SALESFORCE sandbox connected to
+    the same production UserGems account, with records re-queued to production.
+    Any exercise of this API therefore writes to live data.
+
+egress:
+  mechanism: campaign action "Send to Webhook"
+  signing: none — no HMAC
+  ref: asyncapi/usergems-webhooks.yml
+
+known_reference_defects:
+  source: https://help.usergems.com/article/using-the-usergems-api
+  defects:
+    - >-
+      reportId is REQUIRED when adding an account even though the Developer Hub
+      lists it as optional; omitting it fails with 422.
+    - >-
+      Add and delete are asymmetric — POST /account takes reportId, DELETE
+      /account takes reportName.
+    - >-
+      DELETE /contact with neither relationshipType nor signal removes the
+      contact from ALL relationship types and ALL signals, not just one.

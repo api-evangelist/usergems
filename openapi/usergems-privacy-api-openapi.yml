@@ -19,7 +19,7 @@ info:
     email: support@usergems.com
   license:
     name: UserGems Terms of Service
-    url: https://www.usergems.com/legal/terms
+    url: https://www.usergems.com/legal-security/terms
 servers:
 - url: https://api.usergems.com/v1
   description: Production

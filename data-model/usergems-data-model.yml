@@ -1,0 +1,151 @@
+generated: '2026-08-13'
+method: derived
+source: >-
+  openapi/usergems-contacts-api-openapi.yml,
+  openapi/usergems-accounts-api-openapi.yml,
+  openapi/usergems-privacy-api-openapi.yml
+docs:
+  - https://app.usergems.com/api/documentation
+  - https://help.usergems.com/article/using-the-usergems-api
+description: >-
+  Entity graph derived from the UserGems OpenAPI request schemas plus the
+  Developer Hub parameter tables. The model is unusual for an API of this class:
+  UserGems assigns no identifiers of its own on this surface. There is no
+  UserGems id, no resource URI and no read operation, so every relationship below
+  is keyed on a natural key (email for a person, domain for a company) or on an
+  identifier that belongs to somebody else's system (Salesforce Account Id, a
+  customer-supplied customId, a UserGems report id chosen in the UI).
+identifiers:
+  strategy: natural-key + foreign-key
+  usergems_ids_exposed: false
+  keys:
+    - entity: Contact
+      key: email
+      note: '"email is the matching key" — Help Center'
+    - entity: Account
+      key: domain
+      note: '"domain is the matching key" — Help Center; submitted alongside name'
+    - entity: Report
+      key: reportId (write) / reportName (delete)
+      note: >-
+        Asymmetric by design defect: POST /account takes reportId, DELETE
+        /account takes reportName.
+entities:
+  - name: Contact
+    schema: AddContactRequest
+    spec: openapi/usergems-contacts-api-openapi.yml
+    operations: [addContact, deleteContact]
+    fields:
+      - {name: email, type: string, format: email, required: true, role: primary-key}
+      - {name: firstName, type: string}
+      - {name: lastName, type: string}
+      - {name: fullName, type: string, note: alternative to firstName + lastName}
+      - {name: company, type: string, role: soft-reference to Account}
+      - {name: relationshipType, type: string, role: classification}
+      - {name: linkedinUrl, type: string, format: uri}
+      - {name: signal, type: string, role: foreign-key to Signal}
+      - {name: custom, type: string, role: round-trip metadata}
+      - {name: '[Signal Field]', type: string, cardinality: 'up to 100', role: extension}
+  - name: Account
+    schema: AddAccountRequest
+    spec: openapi/usergems-accounts-api-openapi.yml
+    operations: [addAccount, deleteAccount]
+    fields:
+      - {name: name, type: string, required: true, role: composite-key}
+      - {name: domain, type: string, required: true, role: primary-key}
+      - {name: reportId, type: string, required_in_practice: true, role: foreign-key to Report}
+      - {name: reportName, type: string, role: foreign-key to Report, note: delete only}
+      - {name: signal, type: string, role: foreign-key to Signal}
+      - {name: salesforceId, type: string, role: external-key (Salesforce Account Id)}
+      - {name: customId, type: string, role: external-key (customer system, e.g. HubSpot)}
+      - {name: custom, type: string, role: round-trip metadata}
+  - name: Signal
+    schema: null
+    spec: null
+    note: >-
+      Not a REST resource — signals are created in-product (Signal → First-Party
+      Person/Company Signal → Create Signal, ingestion method "API"). The API only
+      references one by name. Omitting `signal` on a contact means job-change
+      tracking with no custom signal attached.
+  - name: Report
+    schema: null
+    spec: null
+    note: >-
+      Not a REST resource; created in-product. Referenced by id on write and by
+      name on delete.
+  - name: PrivacyDeleteRequest
+    schema: PrivacyDeleteRequest
+    spec: openapi/usergems-privacy-api-openapi.yml
+    operations: [privacyDelete]
+    fields:
+      - {name: email, type: string, format: email, required: true}
+    note: >-
+      Erasure is global — it removes the contact from all UserGems tracking
+      surfaces, not from one signal or report.
+  - name: QueueAck
+    schema: QueueAck
+    role: response
+    fields:
+      - {name: message, type: string, required: true}
+    note: Acknowledges enqueueing, not completion.
+  - name: Error
+    schema: Error
+    role: response
+    fields:
+      - {name: message, type: string, required: true}
+      - {name: code, type: string}
+relationships:
+  - from: Contact
+    to: Account
+    type: belongs_to
+    via: company
+    strength: soft
+    note: >-
+      A free-text company name, not a key. There is no join to the Account entity
+      and no referential integrity on this surface.
+  - from: Contact
+    to: Signal
+    type: belongs_to
+    via: signal
+    cardinality: one per submission, many over repeated submissions
+    note: >-
+      DELETE /contact without `signal` removes the contact from ALL signals, which
+      confirms the underlying relation is many-to-many.
+  - from: Contact
+    to: RelationshipType
+    type: belongs_to
+    via: relationshipType
+    note: >-
+      Enumerated-ish: Closed Won Opp Contact, Champion, User, Open Opp Contact,
+      Closed Lost Opp Contact, Prospect, Other, plus any type created manually in
+      UserGems settings. Not constrained in the spec because customers extend it.
+  - from: Account
+    to: Report
+    type: belongs_to
+    via: reportId / reportName
+  - from: Account
+    to: Signal
+    type: belongs_to
+    via: signal
+  - from: Account
+    to: SalesforceAccount
+    type: has_one
+    via: salesforceId
+    external: true
+  - from: Account
+    to: ExternalRecord
+    type: has_one
+    via: customId
+    external: true
+cardinality_notes:
+  - >-
+    Delete scoping is the clearest evidence of cardinality: DELETE /contact takes
+    optional relationshipType and signal, and leaving both out removes the
+    contact from every relationship type and every signal. So one email may be
+    tracked under many (relationshipType, signal) combinations simultaneously.
+gaps:
+  - No read operations, so the graph cannot be traversed through the API.
+  - No UserGems-issued identifiers are returned on any response.
+  - No id prefixes or resource URIs to document.
+  - No schema published for the outbound webhook payload, so the egress shape of these entities is unknown.
+render: null

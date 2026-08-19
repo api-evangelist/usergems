@@ -1,0 +1,78 @@
+generated: '2026-08-13'
+method: searched
+source: https://app.usergems.com/api/documentation
+description: >-
+  Lifecycle posture for the UserGems API surface. UserGems versions the REST API
+  in the URI path (/v1) and has shipped no second version. Beyond that the
+  operational-transparency surface is thin: there is no deprecation policy, no
+  Sunset/Deprecation header support, no SLA page, no dated changelog, and the
+  /status page publishes no status. The MCP server is explicitly time-boxed early
+  access, which is the one dated lifecycle commitment the company publishes.
+versioning:
+  scheme: uri-path
+  current: v1
+  docs: https://app.usergems.com/api/documentation
+  history: >-
+    No prior or successor version is published; /v1 is the only version ever
+    documented.
+deprecation:
+  policy_url: null
+  sunset_header: false
+  deprecation_header: false
+  note: >-
+    No deprecation or sunset policy is published anywhere on usergems.com or in
+    the Help Center. No pointer is emitted for this — an absence must not be
+    scored as a policy.
+sla:
+  url: null
+  uptime_target: null
+status_page:
+  url: null
+  probed: https://www.usergems.com/status
+  http_status: 200
+  finding: >-
+    The page exists, is titled "UserGems Status", and returns 200 — but its body
+    carries only the site navigation and footer. There is no component list, no
+    uptime history, no incident feed and no third-party status vendor (no
+    Statuspage/Instatus/status.io embed or iframe). status.usergems.com does not
+    resolve. A 200 on an empty page is not a status page, so no StatusPage
+    pointer is emitted.
+changelog:
+  url: null
+  note: >-
+    UserGems publishes a press/announcement index at /news (53 entries) and a
+    marketing blog, but no dated, versioned changelog or release-notes feed for
+    the API or platform. No ChangeLog pointer is emitted.
+deprecated_operations: []
+surfaces:
+  - surface: REST API
+    base_url: https://api.usergems.com/v1
+    stability: stable
+    evidence: >-
+      Five operations, unchanged shape, documented on the same Developer Hub
+      page since the profile was first built.
+  - surface: MCP server
+    url: https://app.usergems.com/mcp/usergems
+    stability: early-access
+    evidence: >-
+      "The UserGems MCP is launching this quarter" — access is gated behind a
+      one-time onboarding session with the Product Team and the published
+      early-access window runs through 2026-08-31.
+    announced_next:
+      - Data Agent
+      - Reporting Agent
+      - Intelligence Agent
+      - Scoring Agent
+x-evidence:
+  - fetched: '2026-08-13'
+    url: https://www.usergems.com/status
+    http_status: 200
+    finding: nav + footer only, no status content
+  - fetched: '2026-08-13'
+    url: https://status.usergems.com
+    http_status: 0
+    finding: does not resolve
+  - fetched: '2026-08-13'
+    url: https://help.usergems.com/article/mcp-early-access-claude
+    http_status: 200
+    finding: early-access window through 2026-08-31

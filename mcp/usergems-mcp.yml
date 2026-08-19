@@ -1,0 +1,197 @@
+generated: '2026-08-13'
+method: probed
+status: published
+source: https://help.usergems.com/article/mcp-early-access-claude
+docs:
+  - https://www.usergems.com/product/mcp
+  - https://help.usergems.com/article/mcp-early-access-claude
+  - https://help.usergems.com/article/mcp-early-access-chatgpt
+description: >-
+  UserGems ships a hosted, remote MCP server — "UserGems MCP" — that lets an
+  agent build and run GTM campaigns against the customer's own UserGems
+  workspace and CRM from Claude or ChatGPT. The endpoint is published verbatim
+  in the Help Center setup articles as the custom-connector / plugin Server URL,
+  and it answers a live POST with an RFC 9728 OAuth challenge, so the server is
+  confirmed reachable and confirmed auth-gated. It is materially different from
+  the REST API in this repo: the REST API is write-only ingestion (5 operations),
+  while the MCP surface reads scored accounts, prospects and signals AND acts —
+  creating campaigns, writing to the CRM, enrolling contacts into Outreach /
+  Salesloft sequences and syncing ad audiences.
+
+deployment:
+  mode: remote
+  endpoint: https://app.usergems.com/mcp/usergems
+  auth: oauth
+  verified: probed
+  install: null
+  package: null
+  note: >-
+    Remote only. There is no npx/stdio package — both Help Center articles
+    configure it as a hosted URL (Claude "Add custom connector"; ChatGPT
+    "Connection: Server URL (not Tunnel)", "Authentication: OAuth").
+
+server:
+  name: UserGems MCP
+  transport: http
+  url: https://app.usergems.com/mcp/usergems
+  availability: early access
+  availability_note: >-
+    As documented on 2026-08-13 the server is in gated early access — "Access is
+    gated until after your one-time session with our Product Team", and the
+    published early-access window runs through 2026-08-31. The product page
+    markets it as launching this quarter.
+
+authorization:
+  model: oauth2
+  spec:
+    - RFC 8414 (authorization server metadata)
+    - RFC 9728 (protected resource metadata)
+    - RFC 7591 (dynamic client registration)
+  issuer: https://app.usergems.com
+  authorization_endpoint: https://app.usergems.com/mcp/oauth/authorize
+  token_endpoint: https://app.usergems.com/mcp/oauth/token
+  registration_endpoint: https://app.usergems.com/mcp/oauth/register
+  grant_types: [authorization_code, refresh_token]
+  pkce: [S256]
+  scopes: [mcp:use]
+  session_binding: >-
+    The Help Center instructs the user to be logged in to UserGems in the browser
+    first — "the connector authorizes against your active UserGems session" — and
+    each person authorizes with their own UserGems login and their own
+    permissions.
+  discovery:
+    - well-known/usergems-oauth-authorization-server.json
+    - well-known/usergems-oauth-protected-resource.json
+
+introspection:
+  tools_list: gated
+  probe:
+    url: https://app.usergems.com/mcp/usergems
+    method: POST
+    body: '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'
+    http_status: 401
+    response: '{"message":"Unauthenticated."}'
+    www_authenticate: >-
+      Bearer realm="mcp",
+      resource_metadata="https://app.usergems.com/.well-known/oauth-protected-resource/mcp/usergems"
+    fetched: '2026-08-13'
+  note: >-
+    Canonical tool names and inputSchemas require an authenticated tools/list
+    call and are therefore NOT recorded here. The capabilities[] block below is
+    the provider's own published description of what the server can do, taken
+    verbatim from the Help Center tables — capability labels, not tool
+    identifiers. Do not treat them as tool names.
+
+capabilities:
+  - group: reps
+    items:
+      - label: Search accounts & prospects
+        does: Find accounts and the right people at them.
+      - label: Get account info
+        does: >-
+          Full account picture in one prompt — firmographics, buying stage,
+          current signals, funding, news.
+      - label: Pull intel
+        does: >-
+          Signal and score history of an account over time, plus intel from past
+          conversations and deal history.
+        prerequisite: Gong connected for past-call intel.
+      - label: Rank best prospects
+        does: The right people to reach at an account, ranked, with why they qualify.
+      - label: Run account research
+        does: >-
+          Answer complex questions about any account from CRM data and public
+          sources.
+      - label: Draft personalized emails
+        does: >-
+          Gem-E writes a tailored message using its instructions and the content
+          library.
+        prerequisite: Personalizes for known contacts today.
+  - group: admins
+    items:
+      - label: Set up a campaign (guided)
+        does: >-
+          Build a campaign from a prompt — audience, actions, schedule — saved as
+          a reviewable draft. Supports outbound and marketing branches.
+      - label: See what's running
+        does: List and search live campaigns; pull their audiences and actions.
+      - label: Create / edit / clone campaigns
+        does: Full lifecycle — edit, clone, pause, archive.
+      - label: Configure campaign actions
+        does: >-
+          Add to sequence (Outreach, Salesloft), Gem-E messages, CRM writes
+          (fields, tasks, owner, CRM campaigns), email, Slack alerts, ad-audience
+          sync (LinkedIn, Meta, Google), webhook, research step, timed delays.
+      - label: Build & inspect audiences
+        does: >-
+          Full filter set including CRM custom fields; see who matches, check a
+          sample, get record counts; find existing audiences.
+      - label: Set sending controls
+        does: Caps per day, account, owner, rep.
+      - label: Manage & test Gem-E
+        does: >-
+          Global and campaign-level instructions, content library, preview and
+          test messaging.
+      - label: Research at scale
+        does: Run research across a whole audience within a campaign.
+  - group: announced
+    status: not-yet-available
+    items:
+      - label: Data Agent
+        does: >-
+          Upload people and accounts (Salesforce report, HubSpot list, CSV,
+          Google Sheet) into UserGems and the CRM with fields mapped.
+      - label: Reporting Agent
+        does: Metrics and patterns across signals, campaigns and content.
+      - label: Intelligence Agent
+        does: Surfaces gaps and proposes (or makes) the multi-step fix.
+      - label: Scoring Agent
+        does: Persona, ICP and scoring in one place with live score-impact preview.
+
+clients_supported:
+  - Claude (Desktop custom connector; Pro/Max self-serve, Team/Enterprise via workspace owner)
+  - ChatGPT (Developer mode plugin, Server URL + OAuth)
+  - Any MCP-compatible interface
+
+outbound_mcp:
+  note: >-
+    UserGems also documents calling OTHER MCP servers mid-workflow, which makes
+    it an MCP client as well as an MCP server.
+  named:
+    - Gong MCP — pull call transcripts
+    - Webflow MCP — fetch a matching customer story from the CMS
+    - Sendoso MCP — trigger a personalized gift per recipient
+    - Bring your own — any MCP-compatible tool
+
+safety:
+  human_in_the_loop: >-
+    Provider-documented. Claude asks for approval before each UserGems tool call;
+    ChatGPT defaults to "Allow low-risk actions" and UserGems' own recommendation
+    is to keep the default or move to "Allow read actions" and to avoid "Allow all
+    actions" during early access.
+  write_actions_called_out:
+    - campaign creation (saved as a reviewable draft)
+    - CRM writes
+    - sequence enrollment
+
+x-evidence:
+  - fetched: '2026-08-13'
+    url: https://help.usergems.com/article/mcp-early-access-claude
+    http_status: 200
+    finding: Publishes the connector URL https://app.usergems.com/mcp/usergems
+  - fetched: '2026-08-13'
+    url: https://help.usergems.com/article/mcp-early-access-chatgpt
+    http_status: 200
+    finding: Same URL, Connection = Server URL, Authentication = OAuth
+  - fetched: '2026-08-13'
+    url: https://app.usergems.com/mcp/usergems
+    http_status: 401
+    finding: POST tools/list returns an RFC 9728 Bearer challenge (realm "mcp")
+  - fetched: '2026-08-13'
+    url: https://app.usergems.com/.well-known/oauth-authorization-server
+    http_status: 200
+    finding: OAuth endpoints under /mcp/oauth/, scope mcp:use, PKCE S256, DCR
+  - fetched: '2026-08-13'
+    url: https://www.usergems.com/product/mcp
+    http_status: 200
+    finding: Product page for UserGems MCP

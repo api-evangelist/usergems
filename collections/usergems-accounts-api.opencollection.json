@@ -1,0 +1,90 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "UserGems Accounts API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-Api-Key",
+      "value": "{{X-Api-Key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Accounts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Add Account",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.usergems.com/v1/account",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Enqueue an account so UserGems sources prospects against it. Accounts are\nidentified by the (name, domain) pair; optional fields associate the\naccount with a Salesforce ID, a custom ID, a report name, and a signal\nlabel so prospects can be routed back to the right workflow.\n"
+        },
+        {
+          "info": {
+            "name": "Delete Account",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.usergems.com/v1/account",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Account name as previously submitted."
+              },
+              {
+                "name": "domain",
+                "value": "",
+                "type": "query",
+                "description": "Primary domain for the account."
+              },
+              {
+                "name": "reportName",
+                "value": "",
+                "type": "query",
+                "description": "Report or workflow grouping the account belongs to."
+              },
+              {
+                "name": "signal",
+                "value": "",
+                "type": "query",
+                "description": "Signal label originally attached to the account."
+              },
+              {
+                "name": "salesforceId",
+                "value": "",
+                "type": "query",
+                "description": "Salesforce Account ID for cross-reference."
+              },
+              {
+                "name": "customId",
+                "value": "",
+                "type": "query",
+                "description": "Customer-supplied identifier for cross-reference."
+              }
+            ]
+          },
+          "docs": "Remove a previously added account. Identified by (name, domain); the\noptional reportName, signal, salesforceId, and customId fields scope the\ndeletion to a specific routing context.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

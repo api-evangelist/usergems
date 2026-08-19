@@ -1,0 +1,62 @@
+generated: '2026-08-13'
+method: probed
+source: https://app.usergems.com/.well-known/oauth-authorization-server
+docs: https://help.usergems.com/article/mcp-early-access-chatgpt
+description: >-
+  UserGems' REST API has no OAuth surface — it authenticates with a single
+  company-wide X-Api-Key header. The OAuth surface belongs entirely to the
+  UserGems MCP server, whose RFC 8414 authorization-server metadata is served
+  anonymously at app.usergems.com and declares exactly one scope. UserGems
+  publishes no scope/permission reference page; the scope set below is read
+  directly from the provider's own discovery document, not from prose.
+schemes:
+  - name: UserGemsMCP
+    type: oauth2
+    source: well-known/usergems-oauth-authorization-server.json
+    issuer: https://app.usergems.com
+    registration_endpoint: https://app.usergems.com/mcp/oauth/register
+    dynamic_client_registration: true
+    flows:
+      - flow: authorizationCode
+        authorizationUrl: https://app.usergems.com/mcp/oauth/authorize
+        tokenUrl: https://app.usergems.com/mcp/oauth/token
+        pkce: [S256]
+        refresh: true
+        scopes:
+          mcp:use: Call the UserGems MCP server on behalf of the signed-in UserGems user.
+scopes:
+  - scope: mcp:use
+    description: >-
+      The single scope the UserGems authorization server advertises. It is
+      coarse-grained: it does not separate read from write, so one grant covers
+      account/prospect lookup as well as campaign creation, CRM writes and
+      sequence enrollment.
+    flows: [authorizationCode]
+    sources:
+      - well-known/usergems-oauth-authorization-server.json
+      - well-known/usergems-oauth-protected-resource.json
+    resource: https://app.usergems.com/mcp/usergems
+authorization_model:
+  granularity: single-scope
+  effective_permissions: >-
+    Delegated from the authorizing user's own UserGems account — "Each person
+    still signs in with their own UserGems login and their own permissions."
+    The scope does not narrow them further.
+  consequence: >-
+    Because there is no read-only scope, least-privilege for an agent cannot be
+    expressed at the token. UserGems' documented mitigation is client-side
+    approval prompts (Claude per-tool approval; ChatGPT permission tiers), which
+    is a client control, not a server-enforced one.
+  documented_gap: >-
+    Separately, the REST API has no scope model at all: "there is one key per
+    company, shared across all integrations. There is no way to issue separate
+    keys per system, isolate a misbehaving integration, or create a sandbox key
+    for testing."
+    (https://help.usergems.com/article/using-the-usergems-api)
+x-evidence:
+  - fetched: '2026-08-13'
+    url: https://app.usergems.com/.well-known/oauth-authorization-server
+    http_status: 200
+  - fetched: '2026-08-13'
+    url: https://app.usergems.com/.well-known/oauth-protected-resource
+    http_status: 200

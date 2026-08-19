@@ -1,0 +1,73 @@
+generated: '2026-08-13'
+method: searched
+source: https://help.usergems.com/article/using-the-usergems-api
+docs:
+  - https://help.usergems.com/article/using-the-usergems-api
+  - https://help.usergems.com/article/conditional-actions
+  - https://help.usergems.com/article/mcp-early-access-claude
+spec_type: none
+description: >-
+  UserGems publishes no AsyncAPI document and no event catalog, but it does ship
+  a real outbound event surface: "Send to Webhook" is a first-class campaign
+  workflow action, and it is the provider's documented answer to the REST API
+  being write-only — "To send data from UserGems to an external system, use the
+  Send to Webhook action in a campaign." This file records that surface honestly:
+  the mechanism is real and documented, the payload contract is not published.
+event_surface:
+  direction: outbound
+  mechanism: campaign workflow action
+  name: Send to Webhook
+  configured_in: UserGems campaign builder (also configurable via the MCP server)
+  trigger_model: >-
+    Signal-driven. A campaign runs against an audience; when a prospect or
+    account matches, the workflow's actions fire in order, and "Send to Webhook"
+    is one of the available actions. Triggering is therefore per-record within a
+    campaign run, not a global event bus.
+  conditional: true
+  conditional_note: >-
+    Send to Webhook is one of the actions that supports Conditional Actions —
+    multiple named variants inside a single action, each with its own audience
+    filter, plus an optional no-filter fallback and a "skip this action if no
+    filter is met" default.
+webhooks:
+  - name: Send to Webhook
+    direction: outbound
+    transport: HTTPS POST to a customer-supplied URL
+    payload_schema: not published
+    event_types: not enumerated
+    delivery_guarantees: not published
+    retry_policy: not published
+    replay: not published
+    signing:
+      hmac: false
+      method: header-based X-Api-Key only
+      source_quote: >-
+        "HMAC webhook signing — outbound webhook verification uses header-based
+        X-Api-Key only" is listed by UserGems under "The following are not
+        currently supported".
+      consequence: >-
+        A receiver cannot cryptographically verify that a delivery originated
+        from UserGems; it can only compare a shared secret presented in a header,
+        which is replayable by anyone who observes it.
+inbound_events:
+  supported: false
+  note: >-
+    There is no inbound event/streaming endpoint. First-party data enters through
+    the write-only REST API (see openapi/), one record per request.
+asyncapi:
+  published: false
+  probed:
+    - url: https://api.usergems.com/asyncapi.yaml
+      status: 302
+    - url: https://www.usergems.com/asyncapi.yaml
+      status: 404
+  note: >-
+    No AsyncAPI document exists at any probed location, and the GitHub
+    organization (github.com/usergems) publishes zero public repositories, so
+    there is no spec to harvest. Not fabricated.
+related_egress:
+  - channel: Slack notification (campaign action)
+  - channel: Email notification (campaign action)
+  - channel: CRM write-back (Salesforce, HubSpot, Microsoft Dynamics)
+  - channel: Sequence enrollment (Outreach, Salesloft, Gong Engage)
+  - channel: Ad-audience sync (LinkedIn, Meta, Google)

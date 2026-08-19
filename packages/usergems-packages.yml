@@ -1,0 +1,64 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  Registry searches against npm, PyPI, RubyGems, crates.io, Packagist, NuGet and
+  the Go module proxy, plus the UserGems GitHub organization and the UserGems
+  Developer Hub / Help Center.
+description: >-
+  UserGems publishes no first-party client libraries in any public package
+  registry. The Developer Hub (https://app.usergems.com/api/documentation)
+  documents the API with raw curl only, and the Help Center article "Using the
+  UserGems API" states plainly that integrating "requires engineering support —
+  someone on your team needs to write the code that sends records to UserGems."
+  The github.com/usergems organization exists but publishes zero public
+  repositories. This is a recorded absence, not an unchecked field: every
+  registry below answered, and none carries a UserGems-authored package.
+packages: []
+registries_probed:
+  - registry: npm
+    endpoint: https://registry.npmjs.org/usergems
+    status: 404
+    version: null
+    note: >-
+      Exact name unpublished. A keyword search
+      (registry.npmjs.org/-/v1/search?text=usergems) returns only third-party
+      packages (e.g. "moattai", an unaffiliated GTM skills bundle) — nothing
+      authored or maintained by UserGems.
+  - registry: pypi
+    endpoint: https://pypi.org/pypi/usergems/json
+    status: 404
+    version: null
+  - registry: rubygems
+    endpoint: https://rubygems.org/api/v1/gems/usergems.json
+    status: 404
+    version: null
+  - registry: crates.io
+    endpoint: https://crates.io/api/v1/crates/usergems
+    status: 403
+    version: null
+    note: Crates.io rejected the unauthenticated query; no UserGems crate is known.
+  - registry: packagist
+    endpoint: https://repo.packagist.org/p2/usergems/usergems.json
+    status: 404
+    version: null
+  - registry: nuget
+    endpoint: https://azuresearch-usnc.nuget.org/query?q=usergems
+    status: 200
+    version: null
+    note: totalHits 0.
+  - registry: go-proxy
+    endpoint: https://proxy.golang.org/github.com/usergems/@v/list
+    status: 404
+    version: null
+source_code:
+  - org: https://github.com/usergems
+    status: 200
+    public_repos: 0
+    note: >-
+      Organization account exists (created 2023) but exposes no public
+      repositories, so there is no source-distributed client either.
+summary:
+  official_packages: 0
+  community_packages: 0
+  languages: []
+  sdk_present: false

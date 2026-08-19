@@ -1,18 +1,87 @@
-generated: '2026-07-11'
-method: derived
+generated: '2026-08-13'
+method: searched
 source: openapi/usergems-api-openapi.yml
+docs:
+  - https://app.usergems.com/api/documentation
+  - https://help.usergems.com/article/using-the-usergems-api
+  - https://app.usergems.com/.well-known/oauth-authorization-server
+description: >-
+  UserGems runs two independent authentication models on two different hosts.
+  The REST ingestion API (api.usergems.com/v1) uses a single company-wide API key
+  in an X-Api-Key header. The MCP server (app.usergems.com/mcp/usergems) uses
+  OAuth 2.0 authorization-code + PKCE with dynamic client registration and a
+  single scope, delegating each caller the permissions of their own UserGems
+  login. They do not share credentials.
 summary:
   types:
-  - apiKey
+    - apiKey
+    - oauth2
   api_key_in:
-  - header
+    - header
+  oauth2_flows:
+    - authorizationCode
 schemes:
-- name: ApiKeyAuth
-  type: apiKey
-  in: header
-  parameter: X-Api-Key
-  description: |-
-    Customer-issued API key. Request a key from support@usergems.com. The
-    key must be included on every request in the X-Api-Key header.
-  sources:
-  - openapi/usergems-api-openapi.yml
+  - name: ApiKeyAuth
+    type: apiKey
+    in: header
+    parameter: X-Api-Key
+    surface: REST (https://api.usergems.com/v1)
+    description: |-
+      Customer-issued API key. Request a key from support@usergems.com. The
+      key must be included on every request in the X-Api-Key header.
+    sources:
+      - openapi/usergems-contacts-api-openapi.yml
+      - openapi/usergems-accounts-api-openapi.yml
+      - openapi/usergems-privacy-api-openapi.yml
+    provisioning: >-
+      Self-service retrieval, not self-service issuance: "Go to Settings →
+      Connected Applications and scroll to the bottom to find your API Token."
+    rotation: >-
+      Manual only — "Keys are not auto-rotated — contact your CSM to request a
+      new key if needed."
+    granularity: >-
+      One key per company, shared across all integrations. No per-system keys,
+      no way to isolate a misbehaving integration, and no separate test key.
+    blast_radius: >-
+      Provider-stated: "The API is write-only, so a leaked key cannot expose any
+      of your data. The risk is that an unauthorized party could write incorrect
+      data to your account."
+  - name: UserGemsMCP
+    type: oauth2
+    surface: MCP (https://app.usergems.com/mcp/usergems)
+    sources:
+      - well-known/usergems-oauth-authorization-server.json
+      - well-known/usergems-oauth-protected-resource.json
+    issuer: https://app.usergems.com
+    flows:
+      - flow: authorizationCode
+        authorizationUrl: https://app.usergems.com/mcp/oauth/authorize
+        tokenUrl: https://app.usergems.com/mcp/oauth/token
+        scopes: [mcp:use]
+        pkce: [S256]
+        refresh_token: true
+    dynamic_client_registration: https://app.usergems.com/mcp/oauth/register
+    challenge: >-
+      An unauthenticated call returns 401 with
+      WWW-Authenticate: Bearer realm="mcp", resource_metadata="…/.well-known/
+      oauth-protected-resource/mcp/usergems" (RFC 9728).
+    identity_binding: >-
+      Authorization runs against the caller's active UserGems browser session;
+      the consent screen names the signed-in email, and each user carries their
+      own permissions.
+transport_security:
+  tls: TLSv1.3 on www, app and api hosts
+  hsts:
+    www.usergems.com: true
+    app.usergems.com: true
+    api.usergems.com: false
+  note: >-
+    Provider statement: "All data transmitted between UserGems and UserGems users
+    is protected using Transport Layer Security (TLS) and HTTP Strict Transport
+    Security (HSTS)." Our probe records no HSTS header on api.usergems.com — see
+    security/usergems-domain-security.yml.
+gaps:
+  - No OIDC discovery document (/.well-known/openid-configuration 404s on every host).
+  - No mTLS, no signed requests, no HMAC option on the REST API.
+  - No API-key scoping and no key-level rate isolation.
+  - No sandbox/test credential of any kind.

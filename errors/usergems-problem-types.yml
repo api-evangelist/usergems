@@ -1,0 +1,92 @@
+generated: '2026-08-13'
+method: searched
+source: https://app.usergems.com/api/documentation
+docs:
+  - https://app.usergems.com/api/documentation
+  - https://help.usergems.com/article/using-the-usergems-api
+format: bare-json-message
+rfc9457: false
+description: >-
+  UserGems publishes a status-code table in the Developer Hub "Errors" section and
+  repeats it in the Help Center. There is no problem+json media type, no error
+  `type` URI, no machine-readable error code and no field-level validation
+  detail — an error body is the same flat {"message": "..."} envelope as a
+  success. The 422 below is not in the Developer Hub table; it is documented only
+  in the Help Center as the failure mode for omitting reportId on POST /account,
+  and is included here because it is the single most likely first failure a new
+  integrator hits.
+envelope:
+  media_type: application/json
+  shape: '{"message": "<human-readable message>", "code": "<optional>"}'
+  note: >-
+    `code` is modelled in our OpenAPI Error schema as optional; the provider's
+    published examples only ever show `message`.
+problems:
+  - status: 400
+    title: Bad Request
+    remediation: >-
+      Malformed JSON or a missing required field. Contacts require `email` (or
+      name + company); accounts require `name` and `domain`.
+    source: https://app.usergems.com/api/documentation
+  - status: 401
+    title: Unauthorized
+    remediation: >-
+      Missing or invalid X-Api-Key header. Retrieve the company key from Settings
+      → Connected Applications.
+    source: https://app.usergems.com/api/documentation
+  - status: 403
+    title: Forbidden
+    detail: You are not allowed to access this resource.
+    remediation: Key is valid but not entitled to the operation; contact your CSM.
+    source: https://app.usergems.com/api/documentation
+  - status: 404
+    title: Not Found
+    remediation: Check the path — the API exposes only /v1/contact, /v1/account and /v1/privacy/delete.
+    source: https://app.usergems.com/api/documentation
+  - status: 405
+    title: Method Not Allowed
+    remediation: >-
+      Only POST and DELETE are supported. There are no GET/read operations on
+      this API at all.
+    source: https://app.usergems.com/api/documentation
+  - status: 406
+    title: Not Acceptable
+    detail: You requested a format that isn't JSON.
+    remediation: Send and accept application/json.
+    source: https://app.usergems.com/api/documentation
+  - status: 410
+    title: Gone
+    remediation: The resource has been removed and will not return.
+    source: https://app.usergems.com/api/documentation
+  - status: 422
+    title: Unprocessable Entity
+    detail: >-
+      Returned when adding an account without reportId — required in practice
+      even though the Developer Hub reference lists it as optional.
+    remediation: Include reportId on POST /v1/account.
+    source: https://help.usergems.com/article/using-the-usergems-api
+    source_operation: openapi/usergems-accounts-api-openapi.yml#addAccount
+  - status: 429
+    title: Too Many Requests
+    remediation: >-
+      Rate limit is 20 requests per second, one record per request. No
+      Retry-After or RateLimit-* header is documented, so back off blindly.
+    source: https://help.usergems.com/article/using-the-usergems-api
+  - status: 500
+    title: Internal Server Error
+    detail: A problem on the UserGems side.
+    remediation: Retry later. Writes are idempotent by natural key (email / domain), so a replayed POST upserts rather than duplicates.
+    source: https://app.usergems.com/api/documentation
+  - status: 503
+    title: Service Unavailable
+    detail: Temporarily offline for maintenance.
+    remediation: Retry later.
+    source: https://app.usergems.com/api/documentation
+applies_to:
+  - openapi/usergems-contacts-api-openapi.yml
+  - openapi/usergems-accounts-api-openapi.yml
+  - openapi/usergems-privacy-api-openapi.yml
+gaps:
+  - No error code registry — every failure is a status code plus prose.
+  - No per-field validation errors, so a 400 does not say which field failed.
+  - No documented retry guidance or Retry-After on 429.

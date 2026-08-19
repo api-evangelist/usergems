@@ -3,8 +3,13 @@ specificationVersion: '0.1'
 schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
 provider: UserGems
 providerId: usergems
+generated: '2026-08-13'
+method: searched
+source: https://www.usergems.com/pricing
+plan_count: 1
+public_price_list: false
 created: '2026-05-25'
-modified: '2026-05-25'
+modified: '2026-08-13'
 reconciled: false
 tags:
   - Sales
@@ -19,6 +24,12 @@ description: |
   guarantee: if a customer spends $100K and does not generate at least $100K
   in pipeline, UserGems refunds the difference. This file captures the known
   commercial surface; per-tier pricing must be obtained from UserGems sales.
+
+  Re-probed 2026-08-13: https://www.usergems.com/pricing returns HTTP 200 but
+  the page carries no tier table, no price, and no plan names — only site
+  navigation and footer. The only commercial call to action on the site is
+  "Book Demo" (https://www.usergems.com/contact). One notional plan is recorded
+  below so the sales-led shape is explicit; no per-tier price is published.
 sources:
   - https://www.usergems.com/product/api
   - https://www.usergems.com/pricing
