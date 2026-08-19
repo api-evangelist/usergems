@@ -48,7 +48,7 @@ access: 3rd-Party
 position: Consuming
 created: '2026-05-25'
 modified: '2026-08-13'
-specificationVersion: '0.16'
+specificationVersion: '0.23'
 apis:
 - aid: usergems:usergems-accounts-api
   name: UserGems Accounts API
