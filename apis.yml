@@ -18,6 +18,20 @@ description: >-
 tags:
   - Sales Intelligence
   - Outbound
+  - Account Based Marketing
+  - Champion Tracking
+  - Job Changes
+  - Buying Signals
+  - AI Scoring
+  - Sales Engagement
+  - CRM
+  - Revenue Operations
+  - Go-To-Market
+  - MCP
+  - AI Agents
+tags_raw:
+  - Sales Intelligence
+  - Outbound
   - ABM
   - Champion Tracking
   - Job Changes
@@ -56,6 +70,8 @@ apis:
   humanURL: https://app.usergems.com/api/documentation
   baseURL: https://api.usergems.com/v1
   tags:
+  - Account
+  tags_raw:
   - Accounts
   properties:
   - type: OpenAPI
@@ -160,6 +176,10 @@ apis:
   humanURL: https://www.usergems.com/product/mcp
   baseURL: https://app.usergems.com/mcp/usergems
   tags:
+  - MCP
+  - Agents
+  - Go-To-Market
+  tags_raw:
   - MCP
   - Agents
   - GTM
