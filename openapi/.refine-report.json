@@ -1,9 +1,7 @@
 {
   "provider": "usergems",
   "sources": [
-    "usergems-accounts-api-openapi.yml",
-    "usergems-contacts-api-openapi.yml",
-    "usergems-privacy-api-openapi.yml"
+    "_original/usergems-api-openapi.yml"
   ],
   "outputs": [
     "usergems-accounts-api-openapi.yml",
@@ -13,6 +11,14 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "usergems-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "usergems-accounts-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "usergems-contacts-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "usergems-privacy-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }
