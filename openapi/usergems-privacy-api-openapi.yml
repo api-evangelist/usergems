@@ -62,15 +62,6 @@ paths:
         5XX:
           $ref: '#/components/responses/ErrorResponse'
 components:
-  examples:
-    PrivacyDeleteAck:
-      summary: Contact removed for privacy
-      value:
-        message: Contact removed
-    PrivacyDeleteExample:
-      summary: Honor a right-to-erasure request
-      value:
-        email: jane.doe@example.com
   responses:
     ErrorResponse:
       description: Error response. UserGems returns standard HTTP status codes (400, 401, 403, 404, 405, 406, 410, 429, 500, 503).
@@ -107,6 +98,15 @@ components:
           type: string
           format: email
           description: Email address of the data subject whose record must be removed.
+  examples:
+    PrivacyDeleteAck:
+      summary: Contact removed for privacy
+      value:
+        message: Contact removed
+    PrivacyDeleteExample:
+      summary: Honor a right-to-erasure request
+      value:
+        email: jane.doe@example.com
   securitySchemes:
     ApiKeyAuth:
       type: apiKey
