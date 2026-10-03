@@ -126,14 +126,6 @@ paths:
           $ref: '#/components/responses/ErrorResponse'
 components:
   examples:
-    DeleteAccountAck:
-      summary: Account removed
-      value:
-        message: Account deleted
-    AddAccountAck:
-      summary: Account accepted
-      value:
-        message: Account added
     AddAccountExample:
       summary: Add a target account
       value:
@@ -142,6 +134,14 @@ components:
         domain: acme.com
         signal: hiring-vp-sales
         salesforceId: 0014x00000ABCDeAAA
+    AddAccountAck:
+      summary: Account accepted
+      value:
+        message: Account added
+    DeleteAccountAck:
+      summary: Account removed
+      value:
+        message: Account deleted
   responses:
     ErrorResponse:
       description: Error response. UserGems returns standard HTTP status codes (400, 401, 403, 404, 405, 406, 410, 429, 500, 503).
@@ -150,17 +150,6 @@ components:
           schema:
             $ref: '#/components/schemas/Error'
   schemas:
-    Error:
-      type: object
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: Human-readable error message.
-        code:
-          type: string
-          description: Optional machine-readable error code.
     AddAccountRequest:
       type: object
       required:
@@ -192,6 +181,17 @@ components:
         custom:
           type: string
           description: Free-form custom metadata to round-trip with downstream events.
+    Error:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Human-readable error message.
+        code:
+          type: string
+          description: Optional machine-readable error code.
     QueueAck:
       type: object
       required:

@@ -112,25 +112,6 @@ paths:
         5XX:
           $ref: '#/components/responses/ErrorResponse'
 components:
-  examples:
-    DeleteContactAck:
-      summary: Contact removed
-      value:
-        message: Contact deleted
-    AddContactAck:
-      summary: Contact accepted
-      value:
-        message: Contact added to queue
-    AddContactExample:
-      summary: Add a Champion contact
-      value:
-        email: jane.doe@example.com
-        firstName: Jane
-        lastName: Doe
-        company: Acme Inc
-        relationshipType: Champion
-        linkedinUrl: https://www.linkedin.com/in/janedoe
-        signal: q2-champions
   schemas:
     AddContactRequest:
       type: object
@@ -201,6 +182,25 @@ components:
         message:
           type: string
           description: Human-readable confirmation message.
+  examples:
+    DeleteContactAck:
+      summary: Contact removed
+      value:
+        message: Contact deleted
+    AddContactExample:
+      summary: Add a Champion contact
+      value:
+        email: jane.doe@example.com
+        firstName: Jane
+        lastName: Doe
+        company: Acme Inc
+        relationshipType: Champion
+        linkedinUrl: https://www.linkedin.com/in/janedoe
+        signal: q2-champions
+    AddContactAck:
+      summary: Contact accepted
+      value:
+        message: Contact added to queue
   responses:
     ErrorResponse:
       description: Error response. UserGems returns standard HTTP status codes (400, 401, 403, 404, 405, 406, 410, 429, 500, 503).
