@@ -125,30 +125,6 @@ paths:
         5XX:
           $ref: '#/components/responses/ErrorResponse'
 components:
-  examples:
-    AddAccountExample:
-      summary: Add a target account
-      value:
-        reportId: '12345'
-        name: Acme Inc
-        domain: acme.com
-        signal: hiring-vp-sales
-        salesforceId: 0014x00000ABCDeAAA
-    AddAccountAck:
-      summary: Account accepted
-      value:
-        message: Account added
-    DeleteAccountAck:
-      summary: Account removed
-      value:
-        message: Account deleted
-  responses:
-    ErrorResponse:
-      description: Error response. UserGems returns standard HTTP status codes (400, 401, 403, 404, 405, 406, 410, 429, 500, 503).
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
     AddAccountRequest:
       type: object
@@ -181,6 +157,14 @@ components:
         custom:
           type: string
           description: Free-form custom metadata to round-trip with downstream events.
+    QueueAck:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Human-readable confirmation message.
     Error:
       type: object
       required:
@@ -192,14 +176,30 @@ components:
         code:
           type: string
           description: Optional machine-readable error code.
-    QueueAck:
-      type: object
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: Human-readable confirmation message.
+  examples:
+    AddAccountAck:
+      summary: Account accepted
+      value:
+        message: Account added
+    AddAccountExample:
+      summary: Add a target account
+      value:
+        reportId: '12345'
+        name: Acme Inc
+        domain: acme.com
+        signal: hiring-vp-sales
+        salesforceId: 0014x00000ABCDeAAA
+    DeleteAccountAck:
+      summary: Account removed
+      value:
+        message: Account deleted
+  responses:
+    ErrorResponse:
+      description: Error response. UserGems returns standard HTTP status codes (400, 401, 403, 404, 405, 406, 410, 429, 500, 503).
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

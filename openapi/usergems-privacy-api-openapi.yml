@@ -62,34 +62,7 @@ paths:
         5XX:
           $ref: '#/components/responses/ErrorResponse'
 components:
-  responses:
-    ErrorResponse:
-      description: Error response. UserGems returns standard HTTP status codes (400, 401, 403, 404, 405, 406, 410, 429, 500, 503).
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-  examples:
-    PrivacyDeleteExample:
-      summary: Honor a right-to-erasure request
-      value:
-        email: jane.doe@example.com
-    PrivacyDeleteAck:
-      summary: Contact removed for privacy
-      value:
-        message: Contact removed
   schemas:
-    Error:
-      type: object
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: Human-readable error message.
-        code:
-          type: string
-          description: Optional machine-readable error code.
     PrivacyDeleteRequest:
       type: object
       required:
@@ -107,6 +80,33 @@ components:
         message:
           type: string
           description: Human-readable confirmation message.
+    Error:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Human-readable error message.
+        code:
+          type: string
+          description: Optional machine-readable error code.
+  examples:
+    PrivacyDeleteAck:
+      summary: Contact removed for privacy
+      value:
+        message: Contact removed
+    PrivacyDeleteExample:
+      summary: Honor a right-to-erasure request
+      value:
+        email: jane.doe@example.com
+  responses:
+    ErrorResponse:
+      description: Error response. UserGems returns standard HTTP status codes (400, 401, 403, 404, 405, 406, 410, 429, 500, 503).
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     ApiKeyAuth:
       type: apiKey
