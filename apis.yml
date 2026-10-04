@@ -209,6 +209,9 @@ apis:
   - type: OAuthScopes
     url: scopes/usergems-scopes.yml
 common:
+  - type: CapabilityMap
+    url: capabilities/usergems-capability-edges.yml
+    name: UserGems Business Capability Map
   - type: PostmanWorkspace
     url: https://www.postman.com/kinlaneapi/usergems/overview
   - type: AgenticAccess

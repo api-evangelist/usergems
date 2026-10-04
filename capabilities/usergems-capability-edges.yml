@@ -1,0 +1,25 @@
+slug: usergems
+provider: UserGems
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 1
+edges:
+- tag: Privacy
+  spec_file: usergems-privacy-api-openapi.yml
+  capability_id: BC-130.50
+  capability_id_l1: BC-130
+  capability_name: Privacy & Data Protection Management
+  confidence: 0.85
+  evidence: POST /privacy/delete privacyDelete; "a privacy delete endpoint used to honor data-subject
+    removal requests"
+  reason: The operation executes data-subject erasure requests, which is squarely privacy and data protection
+    management (data subject rights).
