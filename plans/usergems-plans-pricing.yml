@@ -76,3 +76,19 @@ guarantees:
       not generate at least $100K in pipeline, they refund the difference.
     threshold: '$100,000'
     metric: pipeline-generated
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models:
+  - subscription
+  units:
+  - seat
+  plans:
+  - name: UserGems Platform
+    access: other
+    model: subscription
+    model_how: stated
+    units:
+    - seat
+    periods:
+    - year
