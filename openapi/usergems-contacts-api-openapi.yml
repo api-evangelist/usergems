@@ -112,33 +112,26 @@ paths:
         5XX:
           $ref: '#/components/responses/ErrorResponse'
 components:
-  examples:
-    AddContactAck:
-      summary: Contact accepted
-      value:
-        message: Contact added to queue
-    DeleteContactAck:
-      summary: Contact removed
-      value:
-        message: Contact deleted
-    AddContactExample:
-      summary: Add a Champion contact
-      value:
-        email: jane.doe@example.com
-        firstName: Jane
-        lastName: Doe
-        company: Acme Inc
-        relationshipType: Champion
-        linkedinUrl: https://www.linkedin.com/in/janedoe
-        signal: q2-champions
-  responses:
-    ErrorResponse:
-      description: Error response. UserGems returns standard HTTP status codes (400, 401, 403, 404, 405, 406, 410, 429, 500, 503).
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
+    Error:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Human-readable error message.
+        code:
+          type: string
+          description: Optional machine-readable error code.
+    QueueAck:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Human-readable confirmation message.
     AddContactRequest:
       type: object
       required:
@@ -189,25 +182,32 @@ components:
           top-level string properties.
 
           '
-    QueueAck:
-      type: object
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: Human-readable confirmation message.
-    Error:
-      type: object
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: Human-readable error message.
-        code:
-          type: string
-          description: Optional machine-readable error code.
+  examples:
+    DeleteContactAck:
+      summary: Contact removed
+      value:
+        message: Contact deleted
+    AddContactExample:
+      summary: Add a Champion contact
+      value:
+        email: jane.doe@example.com
+        firstName: Jane
+        lastName: Doe
+        company: Acme Inc
+        relationshipType: Champion
+        linkedinUrl: https://www.linkedin.com/in/janedoe
+        signal: q2-champions
+    AddContactAck:
+      summary: Contact accepted
+      value:
+        message: Contact added to queue
+  responses:
+    ErrorResponse:
+      description: Error response. UserGems returns standard HTTP status codes (400, 401, 403, 404, 405, 406, 410, 429, 500, 503).
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     ApiKeyAuth:
       type: apiKey
